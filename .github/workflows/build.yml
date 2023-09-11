@@ -1,0 +1,34 @@
+name: Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Configure git
+      run: |
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
+
+    - name: Build
+      run: |
+        rm -rf $GITHUB_WORKSPACE/.m2 || true
+        ./gradlew \
+          -Dmaven.repo.local=$GITHUB_WORKSPACE/.m2 \
+          publishToMavenLocal
+
+    - name: Commit changes
+      run: |
+        git add .m2
+        git commit -m "Publish maven artifacts" || true
+
+    - name: Push changes to repo
+      uses: ad-m/github-push-action@master
+      with:
+        branch: ${{ github.ref }}
