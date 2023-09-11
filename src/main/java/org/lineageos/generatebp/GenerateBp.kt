@@ -284,6 +284,7 @@ class GenerateBp(
             "org.jetbrains.kotlin:kotlin-stdlib" -> "kotlin-stdlib"
             "org.jetbrains.kotlin:kotlin-stdlib-jdk8" -> "kotlin-stdlib-jdk8"
             "org.jetbrains.kotlinx:kotlinx-coroutines-android" -> "kotlinx-coroutines-android"
+            "org.jetbrains.kotlinx:kotlinx-coroutines-core" -> "kotlinx-coroutines-core"
             else -> moduleName.replace(":", "_")
         }
 
