@@ -1,7 +1,6 @@
 name: Build
 
-on:
-  workflow_dispatch:
+on: [push, pull_request, workflow_dispatch]
 
 jobs:
   build:
@@ -17,6 +16,10 @@ jobs:
         git config --global user.name "github-actions[bot]"
 
     - name: Build
+      run: ./gradlew build
+
+    - name: Publish
+      if: github.event_name == 'workflow_dispatch'
       run: |
         rm -rf $GITHUB_WORKSPACE/.m2 || true
         ./gradlew \
