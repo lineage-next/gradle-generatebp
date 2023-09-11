@@ -25,6 +25,10 @@ jobs:
         ./gradlew \
           -Dmaven.repo.local=$GITHUB_WORKSPACE/.m2 \
           publishToMavenLocal
+        find $GITHUB_WORKSPACE/.m2 \
+          -type f \
+          -name maven-metadata-local.xml \
+          -execdir mv {} maven-metadata.xml \;
 
     - name: Commit changes
       run: |
