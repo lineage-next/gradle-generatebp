@@ -15,11 +15,16 @@ jobs:
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
 
+    - name: Setup JDK 17
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'zulu'
+        java-version: 17
+
     - name: Build
       run: ./gradlew build
 
     - name: Publish
-      if: github.event_name == 'workflow_dispatch'
       run: |
         rm -rf $GITHUB_WORKSPACE/.m2 || true
         ./gradlew \
@@ -29,6 +34,17 @@ jobs:
           -type f \
           -name maven-metadata-local.xml \
           -execdir mv {} maven-metadata.xml \;
+
+    - name: Generate Android.bp for example app
+      working-directory: example
+      run: |
+        ./gradlew \
+          -Dmaven.repo.local=$GITHUB_WORKSPACE/.m2 \
+          app:generateBp
+        if [[ ! -z $(git status -s .) ]]; then
+          git status
+          exit -1
+        fi
 
     - name: Commit changes
       if: github.event_name == 'workflow_dispatch'
