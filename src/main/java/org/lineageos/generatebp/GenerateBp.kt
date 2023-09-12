@@ -70,9 +70,13 @@ internal class GenerateBp(
             // Get file path
             val dirPath = "${libsBase}/${it.module.aospModulePath}"
             val filePath = "${dirPath}/${it.file.name}"
+            val licensePath = "${filePath}.license"
 
             // Copy artifact to app/libs
             it.file.copyTo(File(filePath))
+
+            // Write license file
+            File(licensePath).writeText(it.reuseCopyrightFileContent)
 
             // Extract AndroidManifest.xml for AARs
             if (it.file.extension == "aar") {
@@ -82,6 +86,11 @@ internal class GenerateBp(
                     }.singleFile)
                     into(dirPath)
                 }
+
+                // Write license file
+                File("${dirPath}/AndroidManifest.xml.license").writeText(
+                    it.reuseCopyrightFileContent
+                )
             }
 
             // Write Android.bp

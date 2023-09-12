@@ -9,6 +9,9 @@ import groovy.util.Node
 import groovy.util.NodeList
 import groovy.xml.XmlParser
 import org.gradle.api.artifacts.ResolvedArtifact
+import org.lineageos.generatebp.utils.Logger
+import org.lineageos.generatebp.utils.POM
+import org.lineageos.generatebp.utils.ReuseUtils
 import java.io.File
 import java.util.zip.ZipFile
 import kotlin.reflect.safeCast
@@ -18,6 +21,10 @@ import kotlin.reflect.safeCast
  * @param file The file
  * @param fileType The type of the artifact
  * @param module The module to which this artifact belongs
+ * @param licenses The licenses of this artifact
+ * @param organizationName The name of the organization that manages this artifact
+ * @param developersNames The developers' names of this artifact
+ * @param inceptionYear The initial release of the module
  * @param targetSdkVersion The target SDK for this artifact
  * @param minSdkVersion The minimum SDK version for this artifact
  * @param dependencies The dependencies of this artifact, each dependency shouldn't provide a valid
@@ -27,9 +34,13 @@ data class Artifact(
     val file: File,
     val fileType: FileType,
     val module: Module,
+    val licenses: List<License>,
+    val organizationName: String?,
+    val developersNames: List<String>,
+    val inceptionYear: Int?,
     val targetSdkVersion: Int,
     val minSdkVersion: Int,
-    val dependencies: Set<Module>,
+    val dependencies: List<Module>,
 ) : Comparable<Artifact> {
     enum class FileType(val extension: String) {
         AAR("aar"),
@@ -50,6 +61,10 @@ data class Artifact(
         var result = file.hashCode()
         result = 31 * result + fileType.hashCode()
         result = 31 * result + module.hashCode()
+        result = 31 * result + licenses.hashCode()
+        result = 31 * result + organizationName.hashCode()
+        result = 31 * result + developersNames.hashCode()
+        result = 31 * result + inceptionYear.hashCode()
         result = 31 * result + targetSdkVersion.hashCode()
         result = 31 * result + minSdkVersion.hashCode()
         result = 31 * result + dependencies.hashCode()
@@ -61,40 +76,49 @@ data class Artifact(
         { it.file },
         { it.fileType },
         { it.module },
+        { it.licenses.hashCode() },
+        { it.organizationName },
+        { it.developersNames.hashCode() },
+        { it.inceptionYear },
         { it.targetSdkVersion },
         { it.minSdkVersion },
         { it.dependencies.hashCode() },
     )
 
+    val reuseCopyrightFileContent by lazy {
+        assert(licenses.isNotEmpty()) {
+            "Licenses not found for module ${module.gradleName}"
+        }
+
+        if (licenses.size > 1) {
+            Logger.info(
+                "More than one license found for ${module.gradleName}, picking the first one found"
+            )
+        }
+
+        val license = licenses.first()
+
+        val copyrights = organizationName?.let {
+            listOf(it)
+        } ?: developersNames
+
+        ReuseUtils.generateReuseCopyrightContent(license, copyrights, inceptionYear)
+    }
+
     companion object {
         private const val DEFAULT_MIN_SDK_VERSION = 14
 
         fun fromResolvedArtifact(it: ResolvedArtifact, defaultTargetSdkVersion: Int): Artifact {
+            val module = Module.fromModuleVersionIdentifier(it.moduleVersion.id)
+
             val file = it.file
 
             val fileType = it.extension?.let { FileType.fromExtension(it) }
-                ?: throw Exception("Unknown artifact extension ${it.extension}")
+                ?: throw Exception(
+                    "Unknown artifact extension ${it.extension} for artifact ${file.path}"
+                )
 
-            // Parse dependencies
-            val dependencies = file.parentFile.parentFile.walk().filter {
-                it.extension == "pom"
-            }.map {
-                mutableListOf<Module>().apply {
-                    val pom = XmlParser().parse(it)
-                    val dependencies = (pom["dependencies"] as NodeList).firstOrNull() as Node?
-
-                    dependencies?.children()?.forEach { node ->
-                        val dependency = node as Node
-
-                        add(
-                            Module(
-                                (dependency.get("groupId") as NodeList).text(),
-                                (dependency.get("artifactId") as NodeList).text()
-                            )
-                        )
-                    }
-                }
-            }.flatten().toSet()
+            val pom = POM.fromArtifact(file, module)
 
             var targetSdkVersion = defaultTargetSdkVersion
             var minSdkVersion = DEFAULT_MIN_SDK_VERSION
@@ -127,10 +151,14 @@ data class Artifact(
             return Artifact(
                 file,
                 fileType,
-                Module.fromModuleVersionIdentifier(it.moduleVersion.id),
+                module,
+                pom.licenses,
+                pom.organizationName,
+                pom.developersNames,
+                pom.inceptionYear,
                 targetSdkVersion,
                 minSdkVersion,
-                dependencies
+                pom.dependencies
             )
         }
     }
