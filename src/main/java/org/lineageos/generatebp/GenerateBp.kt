@@ -12,7 +12,7 @@ import org.lineageos.generatebp.models.Artifact
 import org.lineageos.generatebp.models.Module
 import java.io.File
 
-class GenerateBp(
+internal class GenerateBp(
     private val project: Project,
     private val targetSdk: Int,
     private val isAvailableInAOSP: (module: Module) -> Boolean,
