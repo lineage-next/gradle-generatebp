@@ -29,11 +29,11 @@
         {
           "name": "gradle-generatebp-1.0.jar",
           "url": "gradle-generatebp-1.0.jar",
-          "size": 41795,
-          "sha512": "33d5d33cf99aa02339c42d27dece1a4e02fb9b1d97e12a0d47601038f8cfdde88f8bccc2607e29300d6ef97b15135ac292ba2d3514af5efe9392621f800dfa30",
-          "sha256": "d59c6a9bfa0c5756c4714cfae62a84a06b3743707664bd523db1d0b046408078",
-          "sha1": "8c80a37542dc1bb8bd534353fb95402712d94951",
-          "md5": "b967eb68bb91c862922cda4851eb3769"
+          "size": 46483,
+          "sha512": "8bcfc2f06f3c45a53fe1cb99dbefa7e208cfc6c178e7fdb49d0a3e037afc1110ac14e0d65757d2a0de2468f3544e8c18e1d794caaef1c5956d6290cc9eabd5ce",
+          "sha256": "771dc81bd805bf7a1473f3034621c224486f5c74806fb11c56e180e9627dc6e4",
+          "sha1": "113cf3a4b25c7eba02ca5917170a9e7260030bfd",
+          "md5": "29cac5de183af68b2785168888e80bc1"
         }
       ]
     },
@@ -52,11 +52,11 @@
         {
           "name": "gradle-generatebp-1.0.jar",
           "url": "gradle-generatebp-1.0.jar",
-          "size": 41795,
-          "sha512": "33d5d33cf99aa02339c42d27dece1a4e02fb9b1d97e12a0d47601038f8cfdde88f8bccc2607e29300d6ef97b15135ac292ba2d3514af5efe9392621f800dfa30",
-          "sha256": "d59c6a9bfa0c5756c4714cfae62a84a06b3743707664bd523db1d0b046408078",
-          "sha1": "8c80a37542dc1bb8bd534353fb95402712d94951",
-          "md5": "b967eb68bb91c862922cda4851eb3769"
+          "size": 46483,
+          "sha512": "8bcfc2f06f3c45a53fe1cb99dbefa7e208cfc6c178e7fdb49d0a3e037afc1110ac14e0d65757d2a0de2468f3544e8c18e1d794caaef1c5956d6290cc9eabd5ce",
+          "sha256": "771dc81bd805bf7a1473f3034621c224486f5c74806fb11c56e180e9627dc6e4",
+          "sha1": "113cf3a4b25c7eba02ca5917170a9e7260030bfd",
+          "md5": "29cac5de183af68b2785168888e80bc1"
         }
       ]
     }
