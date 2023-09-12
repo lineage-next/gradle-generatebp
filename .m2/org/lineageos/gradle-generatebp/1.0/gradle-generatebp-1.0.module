@@ -29,11 +29,11 @@
         {
           "name": "gradle-generatebp-1.0.jar",
           "url": "gradle-generatebp-1.0.jar",
-          "size": 23067,
-          "sha512": "33bfa96da25a2369a3e4651257b7e08af20fc388dd6c1c0fce504476c1d4dc8540a5208f843fa635c56fb451b4f78e9d5fad39f2dac63086bb241057c486f3fd",
-          "sha256": "5110ffdb0a850453d688dd527f22a24284f6fcc3ee4f9ba10369899dc06de139",
-          "sha1": "7142c9cc0e5760638487a2f297ceef4dad4dc5da",
-          "md5": "27f7bf63466ba9f187648c9c35f08f51"
+          "size": 41795,
+          "sha512": "33d5d33cf99aa02339c42d27dece1a4e02fb9b1d97e12a0d47601038f8cfdde88f8bccc2607e29300d6ef97b15135ac292ba2d3514af5efe9392621f800dfa30",
+          "sha256": "d59c6a9bfa0c5756c4714cfae62a84a06b3743707664bd523db1d0b046408078",
+          "sha1": "8c80a37542dc1bb8bd534353fb95402712d94951",
+          "md5": "b967eb68bb91c862922cda4851eb3769"
         }
       ]
     },
@@ -48,24 +48,15 @@
         "org.gradle.usage": "java-runtime",
         "org.jetbrains.kotlin.platform.type": "jvm"
       },
-      "dependencies": [
-        {
-          "group": "com.android.tools.build",
-          "module": "gradle",
-          "version": {
-            "requires": "7.4.2"
-          }
-        }
-      ],
       "files": [
         {
           "name": "gradle-generatebp-1.0.jar",
           "url": "gradle-generatebp-1.0.jar",
-          "size": 23067,
-          "sha512": "33bfa96da25a2369a3e4651257b7e08af20fc388dd6c1c0fce504476c1d4dc8540a5208f843fa635c56fb451b4f78e9d5fad39f2dac63086bb241057c486f3fd",
-          "sha256": "5110ffdb0a850453d688dd527f22a24284f6fcc3ee4f9ba10369899dc06de139",
-          "sha1": "7142c9cc0e5760638487a2f297ceef4dad4dc5da",
-          "md5": "27f7bf63466ba9f187648c9c35f08f51"
+          "size": 41795,
+          "sha512": "33d5d33cf99aa02339c42d27dece1a4e02fb9b1d97e12a0d47601038f8cfdde88f8bccc2607e29300d6ef97b15135ac292ba2d3514af5efe9392621f800dfa30",
+          "sha256": "d59c6a9bfa0c5756c4714cfae62a84a06b3743707664bd523db1d0b046408078",
+          "sha1": "8c80a37542dc1bb8bd534353fb95402712d94951",
+          "md5": "b967eb68bb91c862922cda4851eb3769"
         }
       ]
     }
