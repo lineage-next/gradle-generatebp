@@ -226,6 +226,10 @@ internal class GenerateBp(
             "org.jetbrains.kotlin:kotlin-stdlib-jdk8" -> "kotlin-stdlib-jdk8"
             "org.jetbrains.kotlinx:kotlinx-coroutines-android" -> "kotlinx-coroutines-android"
             "org.jetbrains.kotlinx:kotlinx-coroutines-core" -> "kotlinx-coroutines-core"
+            "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm" -> "kotlinx-coroutines-core-jvm"
+            "org.jetbrains.kotlinx:kotlinx-coroutines-guava" -> "kotlinx_coroutines_guava"
+            "org.jetbrains.kotlinx:kotlinx-coroutines-reactive" -> "kotlinx_coroutines_reactive"
+            "org.jetbrains.kotlinx:kotlinx-coroutines-rx2" -> "kotlinx_coroutines_rx2"
             else -> moduleName.replace(":", "_")
         }
     }
