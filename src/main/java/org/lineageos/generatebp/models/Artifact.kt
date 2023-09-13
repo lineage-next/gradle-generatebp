@@ -86,7 +86,7 @@ data class Artifact(
     )
 
     val reuseCopyrightFileContent by lazy {
-        assert(licenses.isNotEmpty()) {
+        require(licenses.isNotEmpty()) {
             "Licenses not found for module ${module.gradleName}"
         }
 

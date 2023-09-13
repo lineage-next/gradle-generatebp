@@ -265,13 +265,13 @@ class POM(
          * @param artifactDir The artifact directory
          */
         private fun findPOMFromArtifactDir(artifactDir: File): File {
-            assert(artifactDir.isDirectory) { "${artifactDir.absolutePath} is not a directory" }
+            require(artifactDir.isDirectory) { "${artifactDir.absolutePath} is not a directory" }
 
             val poms = artifactDir.walk().filter {
                 it.extension == "pom"
             }.toSet()
 
-            assert(poms.isNotEmpty()) { "No POM found for artifact ${artifactDir.path}" }
+            require(poms.isNotEmpty()) { "No POM found for artifact ${artifactDir.path}" }
 
             if (poms.size > 1) {
                 Logger.debug("Multiple POMs found for ${artifactDir.path}, using the first one")
