@@ -9,4 +9,18 @@
   <groupId>org.lineageos</groupId>
   <artifactId>gradle-generatebp</artifactId>
   <version>1.0</version>
+  <name>gradle-generatebp</name>
+  <url>https://github.com/lineage-next/gradle-generatebp</url>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>The LineageOS Project</name>
+      <url>https://lineageos.org</url>
+    </developer>
+  </developers>
 </project>
