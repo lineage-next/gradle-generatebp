@@ -72,13 +72,12 @@ internal class GenerateBp(
             // Get file path
             val dirPath = "${libsBase}/${it.module.aospModulePath}"
             val filePath = "${dirPath}/${it.file.name}"
-            val licensePath = "${filePath}.license"
 
             // Copy artifact to app/libs
             it.file.copyTo(File(filePath))
 
             // Write license file
-            File(licensePath).writeText(it.reuseCopyrightFileContent)
+            it.writeCopyrightFileForFile(filePath)
 
             // Extract AndroidManifest.xml for AARs
             if (it.file.extension == "aar") {
@@ -90,9 +89,7 @@ internal class GenerateBp(
                 }
 
                 // Write license file
-                File("${dirPath}/AndroidManifest.xml.license").writeText(
-                    it.reuseCopyrightFileContent
-                )
+                it.writeCopyrightFileForFile("${dirPath}/AndroidManifest.xml")
             }
 
             // Write Android.bp
@@ -250,6 +247,12 @@ internal class GenerateBp(
             "org.jetbrains.kotlinx:kotlinx-coroutines-reactive" -> "kotlinx_coroutines_reactive"
             "org.jetbrains.kotlinx:kotlinx-coroutines-rx2" -> "kotlinx_coroutines_rx2"
             else -> moduleName.replace(":", "_")
+        }
+
+        private fun Artifact.writeCopyrightFileForFile(file: String) {
+            reuseCopyrightFileContent.takeIf { it.isNotEmpty() }?.let {
+                File("$file.license").writeText(it)
+            }
         }
     }
 }

@@ -86,21 +86,24 @@ data class Artifact(
     )
 
     val reuseCopyrightFileContent by lazy {
-        require(licenses.isNotEmpty()) {
-            "Licenses not found for module ${module.gradleName}"
-        }
-
         if (licenses.size > 1) {
             Logger.info(
                 "More than one license found for ${module.gradleName}, picking the first one found"
             )
         }
 
-        val license = licenses.first()
+        val license = licenses.firstOrNull() ?: run {
+            Logger.info("No license found for module ${module.gradleName}")
+            null
+        }
 
         val copyrights = organizationName?.let {
             listOf(it)
         } ?: developersNames
+
+        if (copyrights.isEmpty()) {
+            Logger.info("No copyright found for ${module.gradleName}")
+        }
 
         ReuseUtils.generateReuseCopyrightContent(license, copyrights, inceptionYear)
     }
