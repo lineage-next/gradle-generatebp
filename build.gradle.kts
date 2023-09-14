@@ -15,6 +15,10 @@ repositories {
     mavenCentral()
 }
 
+kotlin {
+    jvmToolchain(17)
+}
+
 publishing {
     publications {
         create<MavenPublication>("pluginMaven") {
