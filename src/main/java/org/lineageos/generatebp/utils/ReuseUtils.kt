@@ -15,7 +15,7 @@ object ReuseUtils {
     private val currentYear = Year.now().value
 
     fun generateReuseCopyrightContent(
-        license: License,
+        license: License? = null,
         copyrights: List<String> = listOf(),
         initialYear: Int? = null,
         addNewlineBetweenCopyrightAndLicense: Boolean = true,
@@ -35,12 +35,17 @@ object ReuseUtils {
                     )
                 )
             }
-            if (addNewlineBetweenCopyrightAndLicense) {
+        }
+
+        license?.let {
+            if (addNewlineBetweenCopyrightAndLicense && copyrights.isNotEmpty()) {
                 append("\n")
             }
+
+            append(SPDX_LICENSE_IDENTIFIER_TEMPLATE.format(it.spdxId))
         }
-        append(SPDX_LICENSE_IDENTIFIER_TEMPLATE.format(license.spdxId))
-        if (addEndingNewline) {
+
+        if (addEndingNewline && isNotEmpty()) {
             append("\n")
         }
     }
