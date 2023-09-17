@@ -23,6 +23,9 @@ internal class GenerateBp(
     private val configuration = project.configurations["releaseRuntimeClasspath"]
 
     private val projectDependencies = configuration.allDependencies.filter {
+        // Not much we can do with null name/group
+        it.name != null && it.group != null &&
+
         // kotlin-bom does not need to be added to dependencies
         it.group != "org.jetbrains.kotlin" && it.name != "kotlin-bom"
     }.map {
