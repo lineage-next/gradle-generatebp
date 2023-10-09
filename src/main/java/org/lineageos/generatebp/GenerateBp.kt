@@ -56,11 +56,15 @@ internal class GenerateBp(
                 append("\n${spaces(4)}")
             }
 
-            // Replace existing dependencies with newly generated ones
             file.writeText(
                 file.readText().replace(
+                    // Replace existing dependencies with newly generated ones
                     "static_libs: \\[.*?]".toRegex(RegexOption.DOT_MATCHES_ALL),
                     "static_libs: [%s]".format(dependenciesString)
+                ).replace(
+                    // Replace existing sdk_version with one from targetSdk
+                    "sdk_version: \"\\d+\"".toRegex(),
+                    "sdk_version: \"${targetSdk}\""
                 )
             )
         }
