@@ -243,6 +243,8 @@ internal class GenerateBp(
         private fun moduleNameAOSP(moduleName: String) = when (moduleName) {
             "androidx.constraintlayout:constraintlayout" -> "androidx-constraintlayout_constraintlayout"
             "com.google.auto.value:auto-value-annotations" -> "auto_value_annotations"
+            "com.google.errorprone:error_prone_annotations" -> "error_prone_annotations"
+            "com.google.errorprone:error_prone_core" -> "error_prone_core"
             "com.google.guava:guava" -> "guava"
             "com.google.guava:listenablefuture" -> "guava"
             "org.jetbrains.kotlin:kotlin-stdlib" -> "kotlin-stdlib"
