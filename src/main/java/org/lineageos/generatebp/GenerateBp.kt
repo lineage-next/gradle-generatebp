@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2023 The LineageOS Project
+ * SPDX-FileCopyrightText: 2023-2024 The LineageOS Project
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -11,7 +11,6 @@ import org.lineageos.generatebp.ext.*
 import org.lineageos.generatebp.models.Artifact
 import org.lineageos.generatebp.models.License
 import org.lineageos.generatebp.models.Module
-import org.lineageos.generatebp.utils.Logger
 import org.lineageos.generatebp.utils.ReuseUtils
 import java.io.File
 
@@ -21,19 +20,21 @@ internal class GenerateBp(
     private val isAvailableInAOSP: (module: Module) -> Boolean,
 ) {
     private val configuration = project.configurations["releaseRuntimeClasspath"]
+    private val resolvedConfiguration = configuration.resolvedConfiguration
 
-    private val projectDependencies = configuration.allDependencies.filter {
-        // Not much we can do with null name/group
-        it.name != null && it.group != null &&
-
+    private val firstLevelDependencies = resolvedConfiguration.firstLevelModuleDependencies.filter {
         // kotlin-bom does not need to be added to dependencies
-        it.group != "org.jetbrains.kotlin" && it.name != "kotlin-bom"
-    }.map {
-        Module.fromDependency(it)
+        it.moduleGroup != "org.jetbrains.kotlin" && it.moduleName != "kotlin-bom"
     }
 
-    private val artifacts = configuration.resolvedConfiguration.resolvedArtifacts.map {
-        Artifact.fromResolvedArtifact(it, targetSdk)
+    private val projectDependencies = firstLevelDependencies.map {
+        Module.fromResolvedDependency(it, targetSdk)
+    }
+
+    private val allDependencies = firstLevelDependencies.asSequence().map {
+        it.recursiveDependencies
+    }.flatten().toSet().map {
+        Module.fromResolvedDependency(it, targetSdk)
     }.toSortedSet()
 
     private val libsBase = File("${project.projectDir.absolutePath}/libs")
@@ -70,33 +71,38 @@ internal class GenerateBp(
         }
 
         // Update app/libs
-        artifacts.forEach {
+        allDependencies.forEach {
             // Skip modules that are available in AOSP
-            if (isAvailableInAOSP(it.module)) {
+            if (isAvailableInAOSP(it)) {
                 return@forEach
             }
 
-            // Get file path
-            val dirPath = "${libsBase}/${it.module.aospModulePath}"
-            val filePath = "${dirPath}/${it.file.name}"
+            // Create dir
+            libsBase.mkdirs()
 
-            // Copy artifact to app/libs
-            it.file.copyTo(File(filePath))
+            it.artifact?.let { artifact ->
+                // Get file path
+                val dirPath = "${libsBase}/${it.aospModulePath}"
+                val filePath = "${dirPath}/${artifact.file.name}"
 
-            // Write license file
-            it.writeCopyrightFileForFile(filePath)
-
-            // Extract AndroidManifest.xml for AARs
-            if (it.file.extension == "aar") {
-                project.copy {
-                    from(project.zipTree(filePath).matching {
-                        include("/AndroidManifest.xml")
-                    }.singleFile)
-                    into(dirPath)
-                }
+                // Copy artifact to app/libs
+                artifact.file.copyTo(File(filePath))
 
                 // Write license file
-                it.writeCopyrightFileForFile("${dirPath}/AndroidManifest.xml")
+                artifact.writeCopyrightFileForFile(filePath)
+
+                // Extract AndroidManifest.xml for AARs
+                if (artifact.file.extension == "aar") {
+                    project.copy {
+                        from(project.zipTree(filePath).matching {
+                            include("/AndroidManifest.xml")
+                        }.singleFile)
+                        into(dirPath)
+                    }
+
+                    // Write license file
+                    artifact.writeCopyrightFileForFile("${dirPath}/AndroidManifest.xml")
+                }
             }
 
             // Write Android.bp
@@ -106,76 +112,96 @@ internal class GenerateBp(
                     file.writeText(libsAndroidBpHeader)
                 }
 
-                when (it.fileType) {
-                    Artifact.FileType.AAR -> {
-                        file.appendText(
-                            """
+                it.artifact?.also { artifact ->
+                    when (artifact.fileType) {
+                        Artifact.FileType.AAR -> {
+                            file.appendText(
+                                """
 
-                            android_library_import {
-                                name: "${it.module.aospModuleName}-nodeps",
-                                aars: ["${it.module.aospModulePath}/${it.file.name}"],
-                                sdk_version: "${it.targetSdkVersion}",
-                                min_sdk_version: "${it.minSdkVersion}",
-                                apex_available: [
-                                    "//apex_available:platform",
-                                    "//apex_available:anyapex",
-                                ],
-                                static_libs: [%s],
-                            }
+                                android_library_import {
+                                    name: "${it.aospModuleName}-nodeps",
+                                    aars: ["${it.aospModulePath}/${artifact.file.name}"],
+                                    sdk_version: "${artifact.targetSdkVersion}",
+                                    min_sdk_version: "${artifact.minSdkVersion}",
+                                    apex_available: [
+                                        "//apex_available:platform",
+                                        "//apex_available:anyapex",
+                                    ],
+                                    static_libs: [%s],
+                                }
+    
+                                android_library {
+                                    name: "${it.aospModuleName}",
+                                    sdk_version: "${artifact.targetSdkVersion}",
+                                    min_sdk_version: "${artifact.minSdkVersion}",
+                                    apex_available: [
+                                        "//apex_available:platform",
+                                        "//apex_available:anyapex",
+                                    ],
+                                    manifest: "${it.aospModulePath}/AndroidManifest.xml",
+                                    static_libs: [%s],
+                                    java_version: "1.7",
+                                }
 
-                            android_library {
-                                name: "${it.module.aospModuleName}",
-                                sdk_version: "${it.targetSdkVersion}",
-                                min_sdk_version: "${it.minSdkVersion}",
-                                apex_available: [
-                                    "//apex_available:platform",
-                                    "//apex_available:anyapex",
-                                ],
-                                manifest: "${it.module.aospModulePath}/AndroidManifest.xml",
-                                static_libs: [%s],
-                                java_version: "1.7",
-                            }
-
-                        """.trimIndent().format(
-                                it.formatDependencies(false),
-                                it.formatDependencies(true)
+                                """.trimIndent().format(
+                                    it.formatDependencies(false),
+                                    it.formatDependencies(true)
+                                )
                             )
-                        )
+                        }
+
+                        Artifact.FileType.JAR -> {
+                            file.appendText(
+                                """
+    
+                                java_import {
+                                    name: "${it.aospModuleName}-nodeps",
+                                    jars: ["${it.aospModulePath}/${artifact.file.name}"],
+                                    sdk_version: "${artifact.targetSdkVersion}",
+                                    min_sdk_version: "${artifact.minSdkVersion}",
+                                    apex_available: [
+                                        "//apex_available:platform",
+                                        "//apex_available:anyapex",
+                                    ],
+                                }
+    
+                                java_library_static {
+                                    name: "${it.aospModuleName}",
+                                    sdk_version: "${artifact.targetSdkVersion}",
+                                    min_sdk_version: "${artifact.minSdkVersion}",
+                                    apex_available: [
+                                        "//apex_available:platform",
+                                        "//apex_available:anyapex",
+                                    ],
+                                    static_libs: [%s],
+                                    java_version: "1.7",
+                                }
+
+                                """.trimIndent().format(
+                                    it.formatDependencies(true)
+                                )
+                            )
+                        }
+                    }
+                } ?: file.appendText(
+                    """
+
+                    java_library_static {
+                        name: "${it.aospModuleName}",
+                        sdk_version: "$targetSdk",
+                        min_sdk_version: "${Artifact.DEFAULT_MIN_SDK_VERSION}",
+                        apex_available: [
+                            "//apex_available:platform",
+                            "//apex_available:anyapex",
+                        ],
+                        static_libs: [%s],
+                        java_version: "1.7",
                     }
 
-                    Artifact.FileType.JAR -> {
-                        file.appendText(
-                            """
-
-                            java_import {
-                                name: "${it.module.aospModuleName}-nodeps",
-                                jars: ["${it.module.aospModulePath}/${it.file.name}"],
-                                sdk_version: "${it.targetSdkVersion}",
-                                min_sdk_version: "${it.minSdkVersion}",
-                                apex_available: [
-                                    "//apex_available:platform",
-                                    "//apex_available:anyapex",
-                                ],
-                            }
-
-                            java_library_static {
-                                name: "${it.module.aospModuleName}",
-                                sdk_version: "${it.targetSdkVersion}",
-                                min_sdk_version: "${it.minSdkVersion}",
-                                apex_available: [
-                                    "//apex_available:platform",
-                                    "//apex_available:anyapex",
-                                ],
-                                static_libs: [%s],
-                                java_version: "1.7",
-                            }
-
-                        """.trimIndent().format(
-                                it.formatDependencies(true)
-                            )
-                        )
-                    }
-                }
+                    """.trimIndent().format(
+                        it.formatDependencies(false)
+                    )
+                )
             }
         }
     }
@@ -187,31 +213,19 @@ internal class GenerateBp(
             "${project.rootProject.name}_${group}_${name}"
         }
 
-    private fun Artifact.formatDependencies(addNoDependencies: Boolean): String {
-        val aospDependencies = dependencies.filter { dep ->
+    private fun Module.formatDependencies(addNoDependencies: Boolean): String {
+        val aospDependencies = dependencies.asSequence().filter { dep ->
             when {
-                artifacts.firstOrNull { artifact ->
-                    dep == artifact.module
-                } == null -> {
-                    val moduleName = if (addNoDependencies) {
-                        dep.aospModuleName
-                    } else {
-                        "${dep.aospModuleName}-nodeps"
-                    }
-                    Logger.debug("$moduleName: Skipping ${dep.gradleName} because it's not in resolvedArtifacts")
-                    false
-                }
-
                 dep.group == "org.jetbrains.kotlin" && dep.name == "kotlin-stdlib-common" -> false
                 else -> true
             }
         }.distinct().map {
             it.aospModuleName
-        }.toMutableList()
+        }.sorted().toMutableList()
 
         if (addNoDependencies) {
             // Add -nodeps dependency for android_library/java_library_static
-            aospDependencies.add(0, "${module.aospModuleName}-nodeps")
+            aospDependencies.add(0, "${aospModuleName}-nodeps")
         }
 
         return aospDependencies.map {

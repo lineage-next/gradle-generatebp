@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2023 The LineageOS Project
+ * SPDX-FileCopyrightText: 2023-2024 The LineageOS Project
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -33,7 +33,7 @@ import kotlin.reflect.safeCast
 data class Artifact(
     val file: File,
     val fileType: FileType,
-    val module: Module,
+    private val module: Module,
     val licenses: List<License>,
     val organizationName: String?,
     val developersNames: List<String>,
@@ -109,7 +109,7 @@ data class Artifact(
     }
 
     companion object {
-        private const val DEFAULT_MIN_SDK_VERSION = 14
+        const val DEFAULT_MIN_SDK_VERSION = 14
 
         fun fromResolvedArtifact(it: ResolvedArtifact, defaultTargetSdkVersion: Int): Artifact {
             val module = Module.fromModuleVersionIdentifier(it.moduleVersion.id)

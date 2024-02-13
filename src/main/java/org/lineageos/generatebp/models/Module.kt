@@ -1,12 +1,13 @@
 /*
- * SPDX-FileCopyrightText: 2023 The LineageOS Project
+ * SPDX-FileCopyrightText: 2023-2024 The LineageOS Project
  * SPDX-License-Identifier: Apache-2.0
  */
 
 package org.lineageos.generatebp.models
 
-import org.gradle.api.artifacts.Dependency
 import org.gradle.api.artifacts.ModuleVersionIdentifier
+import org.gradle.api.artifacts.ResolvedDependency
+import org.lineageos.generatebp.utils.Logger
 import kotlin.reflect.safeCast
 
 /**
@@ -15,11 +16,15 @@ import kotlin.reflect.safeCast
  * @param name The name of the module
  * @param version The version of the module, set to "any" by default. This field is ignored for
  *                comparison and it's only used for [aospModulePath]
+ * @param dependencies The dependencies of the module
+ * @param artifact The artifact of this module
  */
 data class Module(
     val group: String,
     val name: String,
-    val version: String = VERSION_ANY
+    val version: String = VERSION_ANY,
+    val dependencies: Set<Module> = setOf(),
+    val artifact: Artifact? = null,
 ) : Comparable<Module> {
     override fun equals(other: Any?) = Module::class.safeCast(other)?.let {
         compareTo(it) == 0
@@ -47,7 +52,24 @@ data class Module(
         fun fromModuleVersionIdentifier(it: ModuleVersionIdentifier) =
             Module(it.group, it.name, it.version)
 
-        fun fromDependency(it: Dependency) =
-            Module(it.group!!, it.name, it.version ?: VERSION_ANY)
+        fun fromResolvedDependency(
+            it: ResolvedDependency,
+            targetSdk: Int,
+            skipDependencies: Boolean = false,
+        ): Module = Module(
+            it.moduleGroup,
+            it.moduleName,
+            it.moduleVersion,
+            it.takeUnless { skipDependencies }?.children?.map {
+                fromResolvedDependency(it, targetSdk, true)
+            }?.toSet() ?: setOf(),
+            it.moduleArtifacts.also {
+                if (it.size > 1) {
+                    Logger.debug("Multiple artifacts found, using first one: $it")
+                }
+            }.firstOrNull()?.let { resolvedArtifact ->
+                Artifact.fromResolvedArtifact(resolvedArtifact, targetSdk)
+            },
+        )
     }
 }
