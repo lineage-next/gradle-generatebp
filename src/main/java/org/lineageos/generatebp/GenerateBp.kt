@@ -241,6 +241,7 @@ internal class GenerateBp(
         }
 
         private fun moduleNameAOSP(moduleName: String) = when (moduleName) {
+            "androidx.annotation:annotation-jvm" -> "androidx.annotation_annotation"
             "androidx.constraintlayout:constraintlayout" -> "androidx-constraintlayout_constraintlayout"
             "com.google.auto.value:auto-value-annotations" -> "auto_value_annotations"
             "com.google.errorprone:error_prone_annotations" -> "error_prone_annotations"
