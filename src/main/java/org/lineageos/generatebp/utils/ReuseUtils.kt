@@ -1,11 +1,12 @@
 /*
- * SPDX-FileCopyrightText: 2023 The LineageOS Project
+ * SPDX-FileCopyrightText: 2023-2024 The LineageOS Project
  * SPDX-License-Identifier: Apache-2.0
  */
 
 package org.lineageos.generatebp.utils
 
 import org.lineageos.generatebp.models.License
+import java.io.File
 import java.time.Year
 
 object ReuseUtils {
@@ -49,4 +50,13 @@ object ReuseUtils {
             append("\n")
         }
     }
+
+    fun readInitialCopyrightYear(path: String) = runCatching {
+        File(path).readLines().firstOrNull {
+            it.contains("SPDX-FileCopyrightText:")
+        }?.let {
+            // Extract initial year from copyright text
+            Regex("\\d+").find(it)?.value?.toInt()
+        }
+    }.getOrNull()
 }
