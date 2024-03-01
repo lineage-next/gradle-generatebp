@@ -13,7 +13,7 @@ object ReuseUtils {
     private const val SPDX_FILE_COPYRIGHT_TEXT_TEMPLATE = "SPDX-FileCopyrightText: %s %s\n"
     private const val SPDX_LICENSE_IDENTIFIER_TEMPLATE = "SPDX-License-Identifier: %s"
 
-    private val currentYear = Year.now().value
+    internal var currentYear = Year.now().value
 
     fun generateReuseCopyrightContent(
         license: License? = null,
@@ -57,6 +57,15 @@ object ReuseUtils {
         }?.let {
             // Extract initial year from copyright text
             Regex("\\d+").find(it)?.value?.toInt()
+        }
+    }.getOrNull()
+
+    fun readCurrentCopyrightYear(path: String) = runCatching {
+        File(path).readLines().firstOrNull {
+            it.contains("SPDX-FileCopyrightText:")
+        }?.let {
+            // Extract current year from copyright text
+            Regex("(?:\\d+-)?(\\d+)").find(it)?.groupValues?.last()?.toInt()
         }
     }.getOrNull()
 }

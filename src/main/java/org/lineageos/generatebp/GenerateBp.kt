@@ -18,7 +18,17 @@ internal class GenerateBp(
     private val project: Project,
     private val targetSdk: Int,
     private val isAvailableInAOSP: (module: Module) -> Boolean,
+    private val libsBase: File = File("${project.projectDir.absolutePath}/libs"),
 ) {
+    init {
+        // When running in CI, override current year with the one from the libs/Android.bp file
+        if (System.getenv("CI") == "true") {
+            ReuseUtils.readCurrentCopyrightYear("$libsBase/Android.bp")?.let {
+                ReuseUtils.currentYear = it
+            }
+        }
+    }
+
     private val configuration = project.configurations["releaseRuntimeClasspath"]
     private val resolvedConfiguration = configuration.resolvedConfiguration
 
@@ -37,7 +47,6 @@ internal class GenerateBp(
         Module.fromResolvedDependency(it, targetSdk)
     }.toSortedSet()
 
-    private val libsBase = File("${project.projectDir.absolutePath}/libs")
     private val libsAndroidBpHeader = buildString {
         append("//\n")
         append(
