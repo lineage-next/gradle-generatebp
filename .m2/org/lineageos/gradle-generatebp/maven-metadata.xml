@@ -3,11 +3,11 @@
   <groupId>org.lineageos</groupId>
   <artifactId>gradle-generatebp</artifactId>
   <versioning>
-    <latest>1.7</latest>
-    <release>1.7</release>
+    <latest>1.8</latest>
+    <release>1.8</release>
     <versions>
-      <version>1.7</version>
+      <version>1.8</version>
     </versions>
-    <lastUpdated>20240301114741</lastUpdated>
+    <lastUpdated>20240301205634</lastUpdated>
   </versioning>
 </metadata>
