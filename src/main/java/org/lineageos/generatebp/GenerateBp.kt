@@ -266,6 +266,12 @@ internal class GenerateBp(
         private fun moduleNameAOSP(moduleName: String) = when (moduleName) {
             "androidx.annotation:annotation-jvm" -> "androidx.annotation_annotation"
             "androidx.constraintlayout:constraintlayout" -> "androidx-constraintlayout_constraintlayout"
+            "androidx.test.espresso:espresso-accessibility" -> "androidx.test.espresso.accessibility"
+            "androidx.test.espresso:espresso-contrib" -> "androidx.test.espresso.contrib"
+            "androidx.test.espresso:espresso-core" -> "androidx.test.espresso.core"
+            "androidx.test.espresso:espresso-idling-resource" -> "androidx.test.espresso.idling-resource"
+            "androidx.test.espresso:espresso-intents" -> "androidx.test.espresso.intents"
+            "androidx.test.espresso:espresso-web" -> "androidx.test.espresso.web"
             "com.google.auto.value:auto-value-annotations" -> "auto_value_annotations"
             "com.google.errorprone:error_prone_annotations" -> "error_prone_annotations"
             "com.google.errorprone:error_prone_core" -> "error_prone_core"
