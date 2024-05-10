@@ -21,15 +21,6 @@ internal class GenerateBp(
     private val isAvailableInAOSP: (module: Module) -> Boolean,
     private val libsBase: File = File("${project.projectDir.absolutePath}/libs"),
 ) {
-    init {
-        // When running in CI, override current year with the one from the libs/Android.bp file
-        if (System.getenv("CI") == "true") {
-            ReuseUtils.readCurrentCopyrightYear("$libsBase/Android.bp")?.let {
-                ReuseUtils.currentYear = it
-            }
-        }
-    }
-
     private val configuration = project.configurations["releaseRuntimeClasspath"]
     private val resolvedConfiguration = configuration.resolvedConfiguration
 
@@ -57,9 +48,10 @@ internal class GenerateBp(
             ReuseUtils.generateReuseCopyrightContent(
                 License.APACHE_2_0,
                 listOf("The LineageOS Project"),
-                initialYear = ReuseUtils.readInitialCopyrightYear("$libsBase/Android.bp"),
+                initialYear = null,
                 addNewlineBetweenCopyrightAndLicense = false,
-                addEndingNewline = false
+                addEndingNewline = false,
+                addCurrentYear = false,
             ).prependIndent("// ")
         )
         append("\n")

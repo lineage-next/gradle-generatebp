@@ -10,10 +10,10 @@ import java.io.File
 import java.time.Year
 
 object ReuseUtils {
-    private const val SPDX_FILE_COPYRIGHT_TEXT_TEMPLATE = "SPDX-FileCopyrightText: %s %s\n"
+    private const val SPDX_FILE_COPYRIGHT_TEXT_TEMPLATE = "SPDX-FileCopyrightText: %s\n"
     private const val SPDX_LICENSE_IDENTIFIER_TEMPLATE = "SPDX-License-Identifier: %s"
 
-    internal var currentYear = Year.now().value
+    internal val currentYear = Year.now().value
 
     fun generateReuseCopyrightContent(
         license: License? = null,
@@ -21,18 +21,26 @@ object ReuseUtils {
         initialYear: Int? = null,
         addNewlineBetweenCopyrightAndLicense: Boolean = true,
         addEndingNewline: Boolean = true,
+        addCurrentYear: Boolean = true,
     ) = buildString {
-        val copyrightYearString = initialYear?.takeUnless { year ->
-            year == currentYear
-        }?.let { year ->
-            "${year}-${currentYear}"
-        } ?: "$currentYear"
+        val copyrightYearString = initialYear?.let { year ->
+            if (year == currentYear || !addCurrentYear) {
+                "$year"
+            } else {
+                "${year}-${currentYear}"
+            }
+        } ?: when (addCurrentYear) {
+            true -> "$currentYear"
+            false -> null
+        }
 
         if (copyrights.isNotEmpty()) {
             copyrights.forEach { developerName ->
                 append(
                     SPDX_FILE_COPYRIGHT_TEXT_TEMPLATE.format(
-                        copyrightYearString, developerName
+                        copyrightYearString?.let {
+                            "$it $developerName"
+                        } ?: developerName
                     )
                 )
             }
