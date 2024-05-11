@@ -130,7 +130,7 @@ data class Artifact(
             if (it.extension == "aar") {
                 ZipFile(file).use {
                     for (zipEntry in it.entries().asIterator()) {
-                        if (zipEntry.name != "/AndroidManifest.xml") {
+                        if (zipEntry.name != "AndroidManifest.xml") {
                             continue
                         }
 
