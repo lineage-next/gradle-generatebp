@@ -29,6 +29,7 @@ import kotlin.reflect.safeCast
  * @param minSdkVersion The minimum SDK version for this artifact
  * @param dependencies The dependencies of this artifact, each dependency shouldn't provide a valid
  *                     version
+ * @param hasJNIs Whether the artifact includes JNIs, only valid for [Artifact.FileType.AAR]
  */
 data class Artifact(
     val file: File,
@@ -41,6 +42,7 @@ data class Artifact(
     val targetSdkVersion: Int,
     val minSdkVersion: Int,
     val dependencies: List<Module>,
+    val hasJNIs: Boolean,
 ) : Comparable<Artifact> {
     enum class FileType(val extension: String) {
         AAR("aar"),
@@ -50,6 +52,12 @@ data class Artifact(
             fun fromExtension(extension: String) = values().firstOrNull {
                 extension == it.extension
             }
+        }
+    }
+
+    init {
+        require(fileType == FileType.AAR || !hasJNIs) {
+            "Non-AARs cannot bundle JNIs"
         }
     }
 
@@ -68,6 +76,7 @@ data class Artifact(
         result = 31 * result + targetSdkVersion.hashCode()
         result = 31 * result + minSdkVersion.hashCode()
         result = 31 * result + dependencies.hashCode()
+        result = 31 * result + hasJNIs.hashCode()
         return result
     }
 
@@ -83,6 +92,7 @@ data class Artifact(
         { it.targetSdkVersion },
         { it.minSdkVersion },
         { it.dependencies.hashCode() },
+        { it.hasJNIs },
     )
 
     val reuseCopyrightFileContent by lazy {
@@ -125,28 +135,28 @@ data class Artifact(
 
             var targetSdkVersion = defaultTargetSdkVersion
             var minSdkVersion = DEFAULT_MIN_SDK_VERSION
+            var hasJNIs = false
 
-            // Parse AndroidManifest.xml for AARs
             if (it.extension == "aar") {
                 ZipFile(file).use {
                     for (zipEntry in it.entries().asIterator()) {
-                        if (zipEntry.name != "AndroidManifest.xml") {
-                            continue
+                        if (zipEntry.name == "AndroidManifest.xml") {
+                            // Parse AndroidManifest.xml for AARs
+                            it.getInputStream(zipEntry)?.use { inputStream ->
+                                val androidManifest = XmlParser().parse(inputStream)
+
+                                val usesSdk =
+                                    (androidManifest["uses-sdk"] as NodeList).first() as Node
+                                targetSdkVersion = Int::class.safeCast(
+                                    usesSdk.get("@targetSdkVersion")
+                                ) ?: targetSdkVersion
+                                minSdkVersion = Int::class.safeCast(
+                                    usesSdk.get("@minSdkVersion")
+                                ) ?: minSdkVersion
+                            }
+                        } else if (zipEntry.name.startsWith("jni/")) {
+                            hasJNIs = true
                         }
-
-                        it.getInputStream(zipEntry)?.use { inputStream ->
-                            val androidManifest = XmlParser().parse(inputStream)
-
-                            val usesSdk = (androidManifest["uses-sdk"] as NodeList).first() as Node
-                            targetSdkVersion = Int::class.safeCast(
-                                usesSdk.get("@targetSdkVersion")
-                            ) ?: targetSdkVersion
-                            minSdkVersion = Int::class.safeCast(
-                                usesSdk.get("@minSdkVersion")
-                            ) ?: minSdkVersion
-                        }
-
-                        break
                     }
                 }
             }
@@ -161,7 +171,8 @@ data class Artifact(
                 pom.inceptionYear,
                 targetSdkVersion,
                 minSdkVersion,
-                pom.dependencies
+                pom.dependencies,
+                hasJNIs,
             )
         }
     }

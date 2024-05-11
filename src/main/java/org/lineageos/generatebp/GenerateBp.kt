@@ -152,7 +152,12 @@ internal class GenerateBp(
                                         "//apex_available:platform",
                                         "//apex_available:anyapex",
                                     ],
-                                    static_libs: [%s],
+                                    static_libs: [%s],${when (artifact.hasJNIs) {
+                                            true -> """
+                                    extract_jni: true,"""
+                                            false -> ""
+                                        }
+                                    }
                                 }
     
                                 android_library {
