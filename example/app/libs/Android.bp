@@ -67,7 +67,6 @@ android_library_import {
         "androidx.transition_transition",
         "androidx.vectordrawable_vectordrawable",
         "androidx.viewpager2_viewpager2",
-        "org.jetbrains.kotlin_kotlin-bom",
     ],
 }
 
@@ -100,7 +99,6 @@ android_library {
         "androidx.transition_transition",
         "androidx.vectordrawable_vectordrawable",
         "androidx.viewpager2_viewpager2",
-        "org.jetbrains.kotlin_kotlin-bom",
     ],
     java_version: "1.7",
 }
