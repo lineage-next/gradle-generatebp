@@ -34,12 +34,15 @@ internal class GenerateBp(
     private val resolvedConfiguration = configuration.resolvedConfiguration
 
     // kotlin-bom does not need to be added to dependencies
-    private val isKotlinBom = { dependency: ResolvedDependency ->
+    private val isKotlinBomModule = { module: Module ->
+        module.group == "org.jetbrains.kotlin" && module.name == "kotlin-bom"
+    }
+    private val isKotlinBomDependency = { dependency: ResolvedDependency ->
         dependency.moduleGroup == "org.jetbrains.kotlin" && dependency.moduleName == "kotlin-bom"
     }
 
     private val firstLevelDependencies = resolvedConfiguration.firstLevelModuleDependencies.filter {
-        !isKotlinBom(it)
+        !isKotlinBomDependency(it)
     }
 
     private val projectDependencies = firstLevelDependencies.map {
@@ -48,9 +51,7 @@ internal class GenerateBp(
 
     private val allDependencies = firstLevelDependencies.asSequence().map {
         it.recursiveDependencies
-    }.flatten().filter {
-        !isKotlinBom(it)
-    }.toSet().map {
+    }.flatten().toSet().map {
         Module.fromResolvedDependency(it, targetSdk)
     }.toSortedSet()
 
@@ -254,6 +255,7 @@ internal class GenerateBp(
         val aospDependencies = dependencies.asSequence().filter { dep ->
             when {
                 dep.group == "org.jetbrains.kotlin" && dep.name == "kotlin-stdlib-common" -> false
+                isKotlinBomModule(dep) -> false
                 else -> true
             }
         }.distinct().map {
