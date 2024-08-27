@@ -3,7 +3,8 @@
 /local.properties
 /.idea
 .DS_Store
-/app/libs
+/app/libs/*
+!/app/libs/Android.bp
 /build
 /captures
 .externalNativeBuild
