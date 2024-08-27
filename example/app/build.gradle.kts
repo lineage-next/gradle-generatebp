@@ -78,6 +78,7 @@ configure<GenerateBpPluginExtension> {
                 // We provide our own core-ktx
                 module.name != "core-ktx"
             }
+            module.group.startsWith("org.jetbrains") -> true
             else -> false
         }
     }
