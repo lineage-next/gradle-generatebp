@@ -33,9 +33,17 @@ internal class GenerateBp(
     private val configuration = project.configurations["releaseRuntimeClasspath"]
     private val resolvedConfiguration = configuration.resolvedConfiguration
 
-    private val projectDependencies = resolvedConfiguration.firstLevelModuleDependencies.map {
-        Module.fromResolvedDependency(it, targetSdk)
+    private val isKotlinBomDependency = { dependency: ResolvedDependency ->
+        dependency.moduleGroup == "org.jetbrains.kotlin" && dependency.moduleName == "kotlin-bom"
     }
+    private val isValidProjectDependency = { dependency: ResolvedDependency ->
+        !isKotlinBomDependency(dependency)
+    }
+
+    private val projectDependencies =
+        resolvedConfiguration.firstLevelModuleDependencies.filter(isValidProjectDependency).map {
+            Module.fromResolvedDependency(it, targetSdk)
+        }
 
     private val allDependencies = resolvedConfiguration.firstLevelModuleDependencies.asSequence().map {
         it.recursiveDependencies
