@@ -33,23 +33,11 @@ internal class GenerateBp(
     private val configuration = project.configurations["releaseRuntimeClasspath"]
     private val resolvedConfiguration = configuration.resolvedConfiguration
 
-    // kotlin-bom does not need to be added to dependencies
-    private val isKotlinBomModule = { module: Module ->
-        module.group == "org.jetbrains.kotlin" && module.name == "kotlin-bom"
-    }
-    private val isKotlinBomDependency = { dependency: ResolvedDependency ->
-        dependency.moduleGroup == "org.jetbrains.kotlin" && dependency.moduleName == "kotlin-bom"
-    }
-
-    private val firstLevelDependencies = resolvedConfiguration.firstLevelModuleDependencies.filter {
-        !isKotlinBomDependency(it)
-    }
-
-    private val projectDependencies = firstLevelDependencies.map {
+    private val projectDependencies = resolvedConfiguration.firstLevelModuleDependencies.map {
         Module.fromResolvedDependency(it, targetSdk)
     }
 
-    private val allDependencies = firstLevelDependencies.asSequence().map {
+    private val allDependencies = resolvedConfiguration.firstLevelModuleDependencies.asSequence().map {
         it.recursiveDependencies
     }.flatten().toSet().map {
         Module.fromResolvedDependency(it, targetSdk)
@@ -251,14 +239,18 @@ internal class GenerateBp(
             "${project.rootProject.name}_${group}_${name}"
         }
 
+    private val isKotlinBom = { module: Module ->
+        module.group == "org.jetbrains.kotlin" && module.name == "kotlin-bom"
+    }
+    private val isKotlinStdlibCommon = { module: Module ->
+        module.group == "org.jetbrains.kotlin" && module.name == "kotlin-stdlib-common"
+    }
+    private val isValidAospModule = { module: Module ->
+        !isKotlinBom(module) && !isKotlinStdlibCommon(module)
+    }
+
     private fun Module.formatDependencies(addNoDependencies: Boolean): String {
-        val aospDependencies = dependencies.asSequence().filter { dep ->
-            when {
-                dep.group == "org.jetbrains.kotlin" && dep.name == "kotlin-stdlib-common" -> false
-                isKotlinBomModule(dep) -> false
-                else -> true
-            }
-        }.distinct().map {
+        val aospDependencies = dependencies.asSequence().filter(isValidAospModule).distinct().map {
             it.aospModuleName
         }.sorted().toMutableList()
 
