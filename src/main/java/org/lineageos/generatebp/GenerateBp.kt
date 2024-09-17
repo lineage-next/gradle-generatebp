@@ -288,6 +288,7 @@ internal class GenerateBp(
             "androidx.test.espresso:espresso-web" -> "androidx.test.espresso.web"
             "com.google.auto.value:auto-value-annotations" -> "auto_value_annotations"
             "com.google.code.findbugs:jsr305" -> "jsr305"
+            "com.google.code.gson:gson" -> "gson"
             "com.google.errorprone:error_prone_annotations" -> "error_prone_annotations"
             "com.google.errorprone:error_prone_core" -> "error_prone_core"
             "com.google.dagger:dagger" -> "dagger2"
