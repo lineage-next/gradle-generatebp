@@ -310,6 +310,8 @@ internal class GenerateBp(
             "org.jetbrains.kotlinx:kotlinx-coroutines-guava" -> "kotlinx_coroutines_guava"
             "org.jetbrains.kotlinx:kotlinx-coroutines-reactive" -> "kotlinx_coroutines_reactive"
             "org.jetbrains.kotlinx:kotlinx-coroutines-rx2" -> "kotlinx_coroutines_rx2"
+            "org.jetbrains.kotlinx:kotlinx-serialization-core" -> "kotlinx_serialization_core"
+            "org.jetbrains.kotlinx:kotlinx-serialization-json" -> "kotlinx_serialization_json"
             else -> moduleName.replace(":", "_")
         }
 
