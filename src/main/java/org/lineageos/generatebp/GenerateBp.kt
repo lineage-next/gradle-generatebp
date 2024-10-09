@@ -297,6 +297,8 @@ internal class GenerateBp(
             "com.google.dagger:hilt-core" -> "hilt_core"
             "com.google.guava:guava" -> "guava"
             "com.google.guava:listenablefuture" -> "guava"
+            "com.squareup.okhttp3:okhttp" -> "okhttp-norepackage"
+            "com.squareup.okio:okio" -> "okio-lib"
             "javax.inject:javax.inject" -> "jsr330"
             "org.bouncycastle:bcpkix-jdk15on" -> "bouncycastle-bcpkix-unbundled"
             "org.bouncycastle:bcpkix-jdk18on" -> "bouncycastle-bcpkix-unbundled"
