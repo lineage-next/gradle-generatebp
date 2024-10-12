@@ -299,6 +299,8 @@ internal class GenerateBp(
             "org.jetbrains.kotlin:kotlin-stdlib" -> "kotlin-stdlib"
             "org.jetbrains.kotlin:kotlin-stdlib-jdk7" -> "kotlin-stdlib-jdk7"
             "org.jetbrains.kotlin:kotlin-stdlib-jdk8" -> "kotlin-stdlib-jdk8"
+            "org.jetbrains.kotlin:kotlin-stdlib-jre7" -> "kotlin-stdlib-jdk7"
+            "org.jetbrains.kotlin:kotlin-stdlib-jre8" -> "kotlin-stdlib-jdk8"
             "org.jetbrains.kotlinx:kotlinx-coroutines-android" -> "kotlinx-coroutines-android"
             "org.jetbrains.kotlinx:kotlinx-coroutines-core" -> "kotlinx-coroutines-core"
             "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm" -> "kotlinx-coroutines-core-jvm"
