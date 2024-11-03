@@ -36,11 +36,12 @@ internal class GenerateBp(
             Module.fromResolvedDependency(it, targetSdk)
         }
 
-    private val allDependencies = resolvedConfiguration.firstLevelModuleDependencies.asSequence().map {
-        it.recursiveDependencies
-    }.flatten().toSet().map {
-        Module.fromResolvedDependency(it, targetSdk)
-    }.toSortedSet()
+    private val allDependencies =
+        resolvedConfiguration.firstLevelModuleDependencies.asSequence().map {
+            it.recursiveDependencies
+        }.flatten().toSet().map {
+            Module.fromResolvedDependency(it, targetSdk)
+        }.toSortedSet()
 
     private val jarDependenciesWithAARs = allDependencies.filter {
         it.hasJarParentedArtifacts
@@ -155,12 +156,14 @@ internal class GenerateBp(
                                         "//apex_available:platform",
                                         "//apex_available:anyapex",
                                     ],
-                                    static_libs: [%s],${when (artifact.hasJNIs) {
-                                            true -> """
+                                    static_libs: [%s],${
+                                    when (artifact.hasJNIs) {
+                                        true -> """
                                     extract_jni: true,"""
-                                            false -> ""
-                                        }
+
+                                        false -> ""
                                     }
+                                }
                                 }
     
                                 android_library {
