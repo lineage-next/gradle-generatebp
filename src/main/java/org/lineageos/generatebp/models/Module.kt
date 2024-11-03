@@ -25,6 +25,7 @@ data class Module(
     val version: String = VERSION_ANY,
     val dependencies: Set<Module> = setOf(),
     val artifact: Artifact? = null,
+    val hasJarParentedArtifacts: Boolean = false,
 ) : Comparable<Module> {
     override fun equals(other: Any?) = Module::class.safeCast(other)?.let {
         compareTo(it) == 0
@@ -69,6 +70,11 @@ data class Module(
                 }
             }.firstOrNull()?.let { resolvedArtifact ->
                 Artifact.fromResolvedArtifact(resolvedArtifact, targetSdk)
+            },
+            it.parents.all { parents ->
+                parents.moduleArtifacts.all { it.extension == "jar" }
+            } && it.moduleArtifacts.any {
+                it.extension == "aar"
             },
         )
     }
