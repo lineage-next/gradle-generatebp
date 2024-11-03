@@ -282,6 +282,8 @@ internal class GenerateBp(
         private fun moduleNameAOSP(moduleName: String) = when (moduleName) {
             "androidx.annotation:annotation-jvm" -> "androidx.annotation_annotation"
             "androidx.constraintlayout:constraintlayout" -> "androidx-constraintlayout_constraintlayout"
+            "androidx.lifecycle:lifecycle-runtime-android" -> "androidx.lifecycle_lifecycle-runtime"
+            "androidx.lifecycle:lifecycle-runtime-ktx-android" -> "androidx.lifecycle_lifecycle-runtime-ktx"
             "androidx.test.espresso:espresso-accessibility" -> "androidx.test.espresso.accessibility"
             "androidx.test.espresso:espresso-contrib" -> "androidx.test.espresso.contrib"
             "androidx.test.espresso:espresso-core" -> "androidx.test.espresso.core"
