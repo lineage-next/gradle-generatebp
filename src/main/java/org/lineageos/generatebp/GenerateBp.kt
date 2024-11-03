@@ -42,6 +42,13 @@ internal class GenerateBp(
         Module.fromResolvedDependency(it, targetSdk)
     }.toSortedSet()
 
+    private val jarDependenciesWithAARs = allDependencies.filter {
+        it.hasJarParentedArtifacts
+    }
+
+    private val projectDependenciesWithAARs =
+        (projectDependencies + jarDependenciesWithAARs).toSortedSet()
+
     private val libsAndroidBpHeader = buildString {
         append("//\n")
         append(
@@ -71,7 +78,7 @@ internal class GenerateBp(
                 append(SHARED_LIBS_HEADER.indentWithSpaces(8))
                 append("\n")
                 append(
-                    projectDependencies.map {
+                    projectDependenciesWithAARs.map {
                         "\"${it.aospModuleName}\","
                     }.indentWithSpaces(8).joinToString("\n")
                 )

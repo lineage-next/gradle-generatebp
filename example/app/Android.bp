@@ -16,10 +16,16 @@ android_app {
 
     static_libs: [
         // DO NOT EDIT THIS SECTION MANUALLY
-        "kotlin-stdlib-jdk8",
         "androidx.appcompat_appcompat",
-        "Example_com.google.android.material_material",
         "Example_androidx.core_core-ktx",
+        "androidx.lifecycle_lifecycle-runtime-android",
+        "Example_com.google.android.material_material",
+        "Example_io.coil-kt.coil3_coil",
+        "Example_io.coil-kt.coil3_coil-android",
+        "Example_io.coil-kt.coil3_coil-core-android",
+        "Example_io.coil-kt.coil3_coil-network-core-android",
+        "Example_io.coil-kt.coil3_coil-network-okhttp",
+        "kotlin-stdlib-jdk8",
     ],
 
     optimize: {
