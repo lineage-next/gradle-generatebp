@@ -18,6 +18,11 @@ enum class License(
         "GPL-3.0",
         Regex(".*www.gnu.org/licenses/gpl-3.0\\..*"),
         Regex("http(s)?://api.github.com/licenses/gpl-3.0"),
+    ),
+    MIT(
+        "MIT",
+        Regex("http(s)?://opensource.org/licenses/MIT"),
+        Regex("http(s)?://api.github.com/licenses/mit"),
     );
 
     companion object {
