@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2023 The LineageOS Project
+ * SPDX-FileCopyrightText: 2023-2024 The LineageOS Project
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -113,7 +113,7 @@ class POM(
         }.mapNotNull { licenseNode ->
             (licenseNode.get("url") as NodeList?)?.text()?.let {
                 License.fromUrl(it) ?: run {
-                    Logger.debug("Unknown license URL $it")
+                    Logger.info("Unknown license URL $it")
                     null
                 }
             } ?: run {
