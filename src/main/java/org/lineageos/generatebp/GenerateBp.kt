@@ -284,6 +284,7 @@ internal class GenerateBp(
             "androidx.constraintlayout:constraintlayout" -> "androidx-constraintlayout_constraintlayout"
             "androidx.lifecycle:lifecycle-runtime-android" -> "androidx.lifecycle_lifecycle-runtime"
             "androidx.lifecycle:lifecycle-runtime-ktx-android" -> "androidx.lifecycle_lifecycle-runtime-ktx"
+	    "androidx.preference:preference-ktx" -> "androidx.preference_preference"
             "androidx.test.espresso:espresso-accessibility" -> "androidx.test.espresso.accessibility"
             "androidx.test.espresso:espresso-contrib" -> "androidx.test.espresso.contrib"
             "androidx.test.espresso:espresso-core" -> "androidx.test.espresso.core"
