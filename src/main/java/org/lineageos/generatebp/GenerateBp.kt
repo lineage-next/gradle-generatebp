@@ -308,6 +308,7 @@ internal class GenerateBp(
             "androidx.test.espresso:espresso-idling-resource" -> "androidx.test.espresso.idling-resource"
             "androidx.test.espresso:espresso-intents" -> "androidx.test.espresso.intents"
             "androidx.test.espresso:espresso-web" -> "androidx.test.espresso.web"
+            "com.adobe.xmp:xmpcore" -> "xmp_toolkit"
             "com.github.bumptech.glide:glide" -> "glide"
             "com.google.auto.value:auto-value-annotations" -> "auto_value_annotations"
             "com.google.code.findbugs:jsr305" -> "jsr305"
