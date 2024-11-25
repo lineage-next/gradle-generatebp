@@ -19,6 +19,11 @@ enum class License(
         Regex(".*www.gnu.org/licenses/gpl-3.0\\..*"),
         Regex("http(s)?://api.github.com/licenses/gpl-3.0"),
     ),
+    LGPL_3_0(
+        "LGPL-3.0",
+        Regex(".*www.gnu.org/licenses/lgpl-3.0\\..*"),
+        Regex("http(s)?://api.github.com/licenses/lgpl-3.0"),
+    ),
     MIT(
         "MIT",
         Regex("http(s)?://opensource.org/licenses/MIT"),
