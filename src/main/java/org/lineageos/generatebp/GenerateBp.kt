@@ -327,6 +327,7 @@ internal class GenerateBp(
             "org.bouncycastle:bcpkix-jdk18on" -> "bouncycastle-bcpkix-unbundled"
             "org.bouncycastle:bcprov-jdk15on" -> "bouncycastle-unbundled"
             "org.bouncycastle:bcprov-jdk18on" -> "bouncycastle-unbundled"
+            "org.jetbrains.kotlin:kotlin-parcelize-runtime" -> "kotlin-parcelize-runtime"
             "org.jetbrains.kotlin:kotlin-stdlib" -> "kotlin-stdlib"
             "org.jetbrains.kotlin:kotlin-stdlib-jdk7" -> "kotlin-stdlib-jdk7"
             "org.jetbrains.kotlin:kotlin-stdlib-jdk8" -> "kotlin-stdlib-jdk8"
