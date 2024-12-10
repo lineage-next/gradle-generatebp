@@ -341,7 +341,15 @@ internal class GenerateBp(
             "org.jetbrains.kotlinx:kotlinx-coroutines-rx2" -> "kotlinx_coroutines_rx2"
             "org.jetbrains.kotlinx:kotlinx-serialization-core" -> "kotlinx_serialization_core"
             "org.jetbrains.kotlinx:kotlinx-serialization-json" -> "kotlinx_serialization_json"
-            else -> moduleName.replace(":", "_")
+
+            else -> when {
+                moduleName.startsWith("org.jetbrains.androidx") -> moduleName.replace(
+                    "org.jetbrains.androidx.",
+                    "androidx."
+                ).replace(":", "_")
+
+                else -> moduleName.replace(":", "_")
+            }
         }
 
         private fun Artifact.writeCopyrightFileForFile(file: String) {
