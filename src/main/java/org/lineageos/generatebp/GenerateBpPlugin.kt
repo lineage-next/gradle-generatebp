@@ -15,7 +15,10 @@ class GenerateBpPlugin : Plugin<Project> {
         project.task("generateBp") {
             doLast {
                 GenerateBp(
-                    project, extension.targetSdk.get(), extension.availableInAOSP.get()
+                    project,
+                    extension.targetSdk.get(),
+                    extension.minSdk.get(),
+                    extension.availableInAOSP.get(),
                 )()
             }
         }

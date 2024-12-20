@@ -10,5 +10,6 @@ import org.lineageos.generatebp.models.Module
 
 interface GenerateBpPluginExtension {
     val targetSdk: Property<Int>
+    val minSdk: Property<Int>
     val availableInAOSP: Property<(module: Module) -> Boolean>
 }

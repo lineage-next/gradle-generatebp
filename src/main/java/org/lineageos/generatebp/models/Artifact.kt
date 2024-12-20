@@ -40,7 +40,7 @@ data class Artifact(
     val developersNames: List<String>,
     val inceptionYear: Int?,
     val targetSdkVersion: Int,
-    val minSdkVersion: Int,
+    val minSdkVersion: Int?,
     val dependencies: List<Module>,
     val hasJNIs: Boolean,
 ) : Comparable<Artifact> {
@@ -119,8 +119,6 @@ data class Artifact(
     }
 
     companion object {
-        const val DEFAULT_MIN_SDK_VERSION = 14
-
         fun fromResolvedArtifact(it: ResolvedArtifact, defaultTargetSdkVersion: Int): Artifact {
             val module = Module.fromModuleVersionIdentifier(it.moduleVersion.id)
 
@@ -134,7 +132,7 @@ data class Artifact(
             val pom = POM.fromArtifact(file, module)
 
             var targetSdkVersion = defaultTargetSdkVersion
-            var minSdkVersion = DEFAULT_MIN_SDK_VERSION
+            var minSdkVersion: Int? = null
             var hasJNIs = false
 
             if (it.extension == "aar") {
