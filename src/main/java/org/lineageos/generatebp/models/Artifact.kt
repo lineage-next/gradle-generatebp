@@ -26,7 +26,6 @@ import kotlin.reflect.safeCast
  * @param developersNames The developers' names of this artifact
  * @param inceptionYear The initial release of the module
  * @param targetSdkVersion The target SDK for this artifact
- * @param minSdkVersion The minimum SDK version for this artifact
  * @param dependencies The dependencies of this artifact, each dependency shouldn't provide a valid
  *                     version
  * @param hasJNIs Whether the artifact includes JNIs, only valid for [Artifact.FileType.AAR]
@@ -40,7 +39,6 @@ data class Artifact(
     val developersNames: List<String>,
     val inceptionYear: Int?,
     val targetSdkVersion: Int,
-    val minSdkVersion: Int,
     val dependencies: List<Module>,
     val hasJNIs: Boolean,
 ) : Comparable<Artifact> {
@@ -74,7 +72,6 @@ data class Artifact(
         result = 31 * result + developersNames.hashCode()
         result = 31 * result + inceptionYear.hashCode()
         result = 31 * result + targetSdkVersion.hashCode()
-        result = 31 * result + minSdkVersion.hashCode()
         result = 31 * result + dependencies.hashCode()
         result = 31 * result + hasJNIs.hashCode()
         return result
@@ -90,7 +87,6 @@ data class Artifact(
         { it.developersNames.hashCode() },
         { it.inceptionYear },
         { it.targetSdkVersion },
-        { it.minSdkVersion },
         { it.dependencies.hashCode() },
         { it.hasJNIs },
     )
@@ -119,8 +115,6 @@ data class Artifact(
     }
 
     companion object {
-        const val DEFAULT_MIN_SDK_VERSION = 14
-
         fun fromResolvedArtifact(it: ResolvedArtifact, defaultTargetSdkVersion: Int): Artifact {
             val module = Module.fromModuleVersionIdentifier(it.moduleVersion.id)
 
@@ -134,7 +128,6 @@ data class Artifact(
             val pom = POM.fromArtifact(file, module)
 
             var targetSdkVersion = defaultTargetSdkVersion
-            var minSdkVersion = DEFAULT_MIN_SDK_VERSION
             var hasJNIs = false
 
             if (it.extension == "aar") {
@@ -150,9 +143,6 @@ data class Artifact(
                                 targetSdkVersion = Int::class.safeCast(
                                     usesSdk.get("@targetSdkVersion")
                                 ) ?: targetSdkVersion
-                                minSdkVersion = Int::class.safeCast(
-                                    usesSdk.get("@minSdkVersion")
-                                ) ?: minSdkVersion
                             }
                         } else if (zipEntry.name.startsWith("jni/")) {
                             hasJNIs = true
@@ -170,7 +160,6 @@ data class Artifact(
                 pom.developersNames,
                 pom.inceptionYear,
                 targetSdkVersion,
-                minSdkVersion,
                 pom.dependencies,
                 hasJNIs,
             )

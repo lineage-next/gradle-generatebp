@@ -9,7 +9,7 @@ android_library_import {
     name: "Example_androidx.core_core-ktx-nodeps",
     aars: ["androidx/core/core-ktx/1.13.1/core-ktx-1.13.1.aar"],
     sdk_version: "34",
-    min_sdk_version: "14",
+    min_sdk_version: "26",
     apex_available: [
         "//apex_available:platform",
         "//apex_available:anyapex",
@@ -24,7 +24,7 @@ android_library_import {
 android_library {
     name: "Example_androidx.core_core-ktx",
     sdk_version: "34",
-    min_sdk_version: "14",
+    min_sdk_version: "26",
     apex_available: [
         "//apex_available:platform",
         "//apex_available:anyapex",
@@ -43,7 +43,7 @@ android_library_import {
     name: "Example_com.google.android.material_material-nodeps",
     aars: ["com/google/android/material/material/1.12.0/material-1.12.0.aar"],
     sdk_version: "34",
-    min_sdk_version: "14",
+    min_sdk_version: "26",
     apex_available: [
         "//apex_available:platform",
         "//apex_available:anyapex",
@@ -73,7 +73,7 @@ android_library_import {
 android_library {
     name: "Example_com.google.android.material_material",
     sdk_version: "34",
-    min_sdk_version: "14",
+    min_sdk_version: "26",
     apex_available: [
         "//apex_available:platform",
         "//apex_available:anyapex",
@@ -107,7 +107,7 @@ java_import {
     name: "Example_com.google.errorprone_error_prone_annotations-nodeps",
     jars: ["com/google/errorprone/error_prone_annotations/2.15.0/error_prone_annotations-2.15.0.jar"],
     sdk_version: "34",
-    min_sdk_version: "14",
+    min_sdk_version: "26",
     apex_available: [
         "//apex_available:platform",
         "//apex_available:anyapex",
@@ -117,7 +117,7 @@ java_import {
 java_library_static {
     name: "Example_com.google.errorprone_error_prone_annotations",
     sdk_version: "34",
-    min_sdk_version: "14",
+    min_sdk_version: "26",
     apex_available: [
         "//apex_available:platform",
         "//apex_available:anyapex",
@@ -132,7 +132,7 @@ java_import {
     name: "Example_com.google.guava_listenablefuture-nodeps",
     jars: ["com/google/guava/listenablefuture/1.0/listenablefuture-1.0.jar"],
     sdk_version: "34",
-    min_sdk_version: "14",
+    min_sdk_version: "26",
     apex_available: [
         "//apex_available:platform",
         "//apex_available:anyapex",
@@ -142,7 +142,7 @@ java_import {
 java_library_static {
     name: "Example_com.google.guava_listenablefuture",
     sdk_version: "34",
-    min_sdk_version: "14",
+    min_sdk_version: "26",
     apex_available: [
         "//apex_available:platform",
         "//apex_available:anyapex",
@@ -157,7 +157,7 @@ java_import {
     name: "Example_com.squareup.okhttp3_okhttp-nodeps",
     jars: ["com/squareup/okhttp3/okhttp/4.12.0/okhttp-4.12.0.jar"],
     sdk_version: "34",
-    min_sdk_version: "14",
+    min_sdk_version: "26",
     apex_available: [
         "//apex_available:platform",
         "//apex_available:anyapex",
@@ -167,7 +167,7 @@ java_import {
 java_library_static {
     name: "Example_com.squareup.okhttp3_okhttp",
     sdk_version: "34",
-    min_sdk_version: "14",
+    min_sdk_version: "26",
     apex_available: [
         "//apex_available:platform",
         "//apex_available:anyapex",
@@ -183,7 +183,7 @@ java_library_static {
 java_library_static {
     name: "Example_com.squareup.okio_okio",
     sdk_version: "34",
-    min_sdk_version: "14",
+    min_sdk_version: "26",
     apex_available: [
         "//apex_available:platform",
         "//apex_available:anyapex",
@@ -198,7 +198,7 @@ java_import {
     name: "Example_com.squareup.okio_okio-jvm-nodeps",
     jars: ["com/squareup/okio/okio-jvm/3.9.1/okio-jvm-3.9.1.jar"],
     sdk_version: "34",
-    min_sdk_version: "14",
+    min_sdk_version: "26",
     apex_available: [
         "//apex_available:platform",
         "//apex_available:anyapex",
@@ -208,7 +208,7 @@ java_import {
 java_library_static {
     name: "Example_com.squareup.okio_okio-jvm",
     sdk_version: "34",
-    min_sdk_version: "14",
+    min_sdk_version: "26",
     apex_available: [
         "//apex_available:platform",
         "//apex_available:anyapex",
@@ -223,7 +223,7 @@ java_library_static {
 java_library_static {
     name: "Example_io.coil-kt.coil3_coil",
     sdk_version: "34",
-    min_sdk_version: "14",
+    min_sdk_version: "26",
     apex_available: [
         "//apex_available:platform",
         "//apex_available:anyapex",
@@ -238,7 +238,7 @@ android_library_import {
     name: "Example_io.coil-kt.coil3_coil-android-nodeps",
     aars: ["io/coil-kt/coil3/coil-android/3.0.0-rc02/coil-release.aar"],
     sdk_version: "34",
-    min_sdk_version: "14",
+    min_sdk_version: "26",
     apex_available: [
         "//apex_available:platform",
         "//apex_available:anyapex",
@@ -252,7 +252,7 @@ android_library_import {
 android_library {
     name: "Example_io.coil-kt.coil3_coil-android",
     sdk_version: "34",
-    min_sdk_version: "14",
+    min_sdk_version: "26",
     apex_available: [
         "//apex_available:platform",
         "//apex_available:anyapex",
@@ -269,7 +269,7 @@ android_library {
 java_library_static {
     name: "Example_io.coil-kt.coil3_coil-core",
     sdk_version: "34",
-    min_sdk_version: "14",
+    min_sdk_version: "26",
     apex_available: [
         "//apex_available:platform",
         "//apex_available:anyapex",
@@ -284,7 +284,7 @@ android_library_import {
     name: "Example_io.coil-kt.coil3_coil-core-android-nodeps",
     aars: ["io/coil-kt/coil3/coil-core-android/3.0.0-rc02/coil-core-release.aar"],
     sdk_version: "34",
-    min_sdk_version: "14",
+    min_sdk_version: "26",
     apex_available: [
         "//apex_available:platform",
         "//apex_available:anyapex",
@@ -306,7 +306,7 @@ android_library_import {
 android_library {
     name: "Example_io.coil-kt.coil3_coil-core-android",
     sdk_version: "34",
-    min_sdk_version: "14",
+    min_sdk_version: "26",
     apex_available: [
         "//apex_available:platform",
         "//apex_available:anyapex",
@@ -331,7 +331,7 @@ android_library {
 java_library_static {
     name: "Example_io.coil-kt.coil3_coil-network-core",
     sdk_version: "34",
-    min_sdk_version: "14",
+    min_sdk_version: "26",
     apex_available: [
         "//apex_available:platform",
         "//apex_available:anyapex",
@@ -346,7 +346,7 @@ android_library_import {
     name: "Example_io.coil-kt.coil3_coil-network-core-android-nodeps",
     aars: ["io/coil-kt/coil3/coil-network-core-android/3.0.0-rc02/coil-network-core-release.aar"],
     sdk_version: "34",
-    min_sdk_version: "14",
+    min_sdk_version: "26",
     apex_available: [
         "//apex_available:platform",
         "//apex_available:anyapex",
@@ -361,7 +361,7 @@ android_library_import {
 android_library {
     name: "Example_io.coil-kt.coil3_coil-network-core-android",
     sdk_version: "34",
-    min_sdk_version: "14",
+    min_sdk_version: "26",
     apex_available: [
         "//apex_available:platform",
         "//apex_available:anyapex",
@@ -379,7 +379,7 @@ android_library {
 java_library_static {
     name: "Example_io.coil-kt.coil3_coil-network-okhttp",
     sdk_version: "34",
-    min_sdk_version: "14",
+    min_sdk_version: "26",
     apex_available: [
         "//apex_available:platform",
         "//apex_available:anyapex",
@@ -394,7 +394,7 @@ java_import {
     name: "Example_io.coil-kt.coil3_coil-network-okhttp-jvm-nodeps",
     jars: ["io/coil-kt/coil3/coil-network-okhttp-jvm/3.0.0-rc02/coil-network-okhttp-jvm-3.0.0-rc02.jar"],
     sdk_version: "34",
-    min_sdk_version: "14",
+    min_sdk_version: "26",
     apex_available: [
         "//apex_available:platform",
         "//apex_available:anyapex",
@@ -404,7 +404,7 @@ java_import {
 java_library_static {
     name: "Example_io.coil-kt.coil3_coil-network-okhttp-jvm",
     sdk_version: "34",
-    min_sdk_version: "14",
+    min_sdk_version: "26",
     apex_available: [
         "//apex_available:platform",
         "//apex_available:anyapex",

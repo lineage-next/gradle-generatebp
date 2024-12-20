@@ -18,6 +18,7 @@ import java.io.File
 internal class GenerateBp(
     private val project: Project,
     private val targetSdk: Int,
+    private val minSdk: Int,
     private val isAvailableInAOSP: (module: Module) -> Boolean,
     private val libsBase: File = File("${project.projectDir.absolutePath}/libs"),
 ) {
@@ -131,6 +132,9 @@ internal class GenerateBp(
 
                     // Write license file
                     artifact.writeCopyrightFileForFile("${dirPath}/AndroidManifest.xml")
+
+                    // Update min SDK version in AndroidManifest.xml
+                    artifact.updateMinSdkInManifest("${dirPath}/AndroidManifest.xml", minSdk)
                 }
             }
 
@@ -151,7 +155,7 @@ internal class GenerateBp(
                                     name: "${it.aospModuleName}-nodeps",
                                     aars: ["${it.aospModulePath}/${artifact.file.name}"],
                                     sdk_version: "${artifact.targetSdkVersion}",
-                                    min_sdk_version: "${artifact.minSdkVersion}",
+                                    min_sdk_version: "${minSdk}",
                                     apex_available: [
                                         "//apex_available:platform",
                                         "//apex_available:anyapex",
@@ -169,7 +173,7 @@ internal class GenerateBp(
                                 android_library {
                                     name: "${it.aospModuleName}",
                                     sdk_version: "${artifact.targetSdkVersion}",
-                                    min_sdk_version: "${artifact.minSdkVersion}",
+                                    min_sdk_version: "${minSdk}",
                                     apex_available: [
                                         "//apex_available:platform",
                                         "//apex_available:anyapex",
@@ -194,7 +198,7 @@ internal class GenerateBp(
                                     name: "${it.aospModuleName}-nodeps",
                                     jars: ["${it.aospModulePath}/${artifact.file.name}"],
                                     sdk_version: "${artifact.targetSdkVersion}",
-                                    min_sdk_version: "${artifact.minSdkVersion}",
+                                    min_sdk_version: "${minSdk}",
                                     apex_available: [
                                         "//apex_available:platform",
                                         "//apex_available:anyapex",
@@ -204,7 +208,7 @@ internal class GenerateBp(
                                 java_library_static {
                                     name: "${it.aospModuleName}",
                                     sdk_version: "${artifact.targetSdkVersion}",
-                                    min_sdk_version: "${artifact.minSdkVersion}",
+                                    min_sdk_version: "${minSdk}",
                                     apex_available: [
                                         "//apex_available:platform",
                                         "//apex_available:anyapex",
@@ -225,7 +229,7 @@ internal class GenerateBp(
                     java_library_static {
                         name: "${it.aospModuleName}",
                         sdk_version: "$targetSdk",
-                        min_sdk_version: "${Artifact.DEFAULT_MIN_SDK_VERSION}",
+                        min_sdk_version: "${minSdk}",
                         apex_available: [
                             "//apex_available:platform",
                             "//apex_available:anyapex",
@@ -347,6 +351,17 @@ internal class GenerateBp(
         private fun Artifact.writeCopyrightFileForFile(file: String) {
             reuseCopyrightFileContent.takeIf { it.isNotEmpty() }?.let {
                 File("$file.license").writeText(it)
+            }
+        }
+
+        private fun Artifact.updateMinSdkInManifest(file: String, minSdk: Int) {
+            File(file).let { manifest ->
+                manifest.writeText(
+                    manifest.readText().replace(
+                        "android:minSdkVersion=: \"\\d+\"".toRegex(),
+                        "android:minSdkVersion=: \"${minSdk}\""
+                    )
+                )
             }
         }
     }
