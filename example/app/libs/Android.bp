@@ -36,7 +36,6 @@ android_library {
         "androidx.core_core",
         "kotlin-stdlib",
     ],
-    java_version: "1.7",
 }
 
 android_library_import {
@@ -100,7 +99,6 @@ android_library {
         "androidx.vectordrawable_vectordrawable",
         "androidx.viewpager2_viewpager2",
     ],
-    java_version: "1.7",
 }
 
 java_import {
@@ -125,7 +123,6 @@ java_library_static {
     static_libs: [
         "Example_com.google.errorprone_error_prone_annotations-nodeps",
     ],
-    java_version: "1.7",
 }
 
 java_import {
@@ -150,7 +147,6 @@ java_library_static {
     static_libs: [
         "Example_com.google.guava_listenablefuture-nodeps",
     ],
-    java_version: "1.7",
 }
 
 java_import {
@@ -177,7 +173,6 @@ java_library_static {
         "Example_com.squareup.okio_okio",
         "kotlin-stdlib-jdk8",
     ],
-    java_version: "1.7",
 }
 
 java_library_static {
@@ -191,7 +186,6 @@ java_library_static {
     static_libs: [
         "Example_com.squareup.okio_okio-jvm",
     ],
-    java_version: "1.7",
 }
 
 java_import {
@@ -217,7 +211,6 @@ java_library_static {
         "Example_com.squareup.okio_okio-jvm-nodeps",
         "kotlin-stdlib",
     ],
-    java_version: "1.7",
 }
 
 java_library_static {
@@ -231,7 +224,6 @@ java_library_static {
     static_libs: [
         "Example_io.coil-kt.coil3_coil-android",
     ],
-    java_version: "1.7",
 }
 
 android_library_import {
@@ -263,7 +255,6 @@ android_library {
         "Example_io.coil-kt.coil3_coil-core",
         "kotlin-stdlib",
     ],
-    java_version: "1.7",
 }
 
 java_library_static {
@@ -277,7 +268,6 @@ java_library_static {
     static_libs: [
         "Example_io.coil-kt.coil3_coil-core-android",
     ],
-    java_version: "1.7",
 }
 
 android_library_import {
@@ -325,7 +315,6 @@ android_library {
         "kotlinx-coroutines-android",
         "kotlinx-coroutines-core",
     ],
-    java_version: "1.7",
 }
 
 java_library_static {
@@ -339,7 +328,6 @@ java_library_static {
     static_libs: [
         "Example_io.coil-kt.coil3_coil-network-core-android",
     ],
-    java_version: "1.7",
 }
 
 android_library_import {
@@ -373,7 +361,6 @@ android_library {
         "Example_io.coil-kt.coil3_coil-core",
         "kotlin-stdlib",
     ],
-    java_version: "1.7",
 }
 
 java_library_static {
@@ -387,7 +374,6 @@ java_library_static {
     static_libs: [
         "Example_io.coil-kt.coil3_coil-network-okhttp-jvm",
     ],
-    java_version: "1.7",
 }
 
 java_import {
@@ -416,5 +402,4 @@ java_library_static {
         "Example_io.coil-kt.coil3_coil-network-core",
         "kotlin-stdlib",
     ],
-    java_version: "1.7",
 }
