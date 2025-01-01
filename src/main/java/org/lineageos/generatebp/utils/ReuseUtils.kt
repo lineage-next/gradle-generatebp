@@ -21,24 +21,12 @@ object ReuseUtils {
         initialYear: Int? = null,
         addNewlineBetweenCopyrightAndLicense: Boolean = true,
         addEndingNewline: Boolean = true,
-        addCurrentYear: Boolean = true,
     ) = buildString {
-        val copyrightYearString = initialYear?.let { year ->
-            if (year == currentYear || !addCurrentYear) {
-                "$year"
-            } else {
-                "${year}-${currentYear}"
-            }
-        } ?: when (addCurrentYear) {
-            true -> "$currentYear"
-            false -> null
-        }
-
         if (copyrights.isNotEmpty()) {
             copyrights.forEach { developerName ->
                 append(
                     SPDX_FILE_COPYRIGHT_TEXT_TEMPLATE.format(
-                        copyrightYearString?.let {
+                        initialYear?.let {
                             "$it $developerName"
                         } ?: developerName
                     )
