@@ -176,7 +176,6 @@ internal class GenerateBp(
                                     ],
                                     manifest: "${it.aospModulePath}/AndroidManifest.xml",
                                     static_libs: [%s],
-                                    java_version: "1.7",
                                 }
 
                                 """.trimIndent().format(
@@ -210,7 +209,6 @@ internal class GenerateBp(
                                         "//apex_available:anyapex",
                                     ],
                                     static_libs: [%s],
-                                    java_version: "1.7",
                                 }
 
                                 """.trimIndent().format(
@@ -231,7 +229,6 @@ internal class GenerateBp(
                             "//apex_available:anyapex",
                         ],
                         static_libs: [%s],
-                        java_version: "1.7",
                     }
 
                     """.trimIndent().format(
