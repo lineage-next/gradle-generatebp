@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2023-2024 The LineageOS Project
+ * SPDX-FileCopyrightText: 2023-2025 The LineageOS Project
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -13,6 +13,11 @@ enum class License(
         "Apache-2.0",
         Regex(".*www.apache.org/licenses/LICENSE-2.0\\..*"),
         Regex("http(s)?://api.github.com/licenses/apache-2.0"),
+    ),
+    BSD_3_CLAUSE(
+        "BSD-3-Clause",
+        Regex("http(s)?://(www\\.)?opensource.org/licenses/bsd-(license|3-clause)"),
+        Regex("http(s)?://api.github.com/licenses/bsd-3-clause"),
     ),
     GPL_3_0(
         "GPL-3.0",
