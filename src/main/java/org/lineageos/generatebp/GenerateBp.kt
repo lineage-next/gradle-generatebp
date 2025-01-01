@@ -60,7 +60,6 @@ internal class GenerateBp(
                 initialYear = null,
                 addNewlineBetweenCopyrightAndLicense = false,
                 addEndingNewline = false,
-                addCurrentYear = false,
             ).prependIndent("// ")
         )
         append("\n")
