@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2023-2024 The LineageOS Project
+ * SPDX-FileCopyrightText: 2023-2025 The LineageOS Project
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -19,7 +19,7 @@ apply {
 buildscript {
     repositories {
         mavenLocal()
-        // maven("https://raw.githubusercontent.com/lineage-next/gradle-generatebp/v1.17/.m2")
+        // maven("https://raw.githubusercontent.com/lineage-next/gradle-generatebp/v1.18/.m2")
     }
 
     dependencies {

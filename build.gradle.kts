@@ -1,10 +1,10 @@
 /*
- * SPDX-FileCopyrightText: 2023-2024 The LineageOS Project
+ * SPDX-FileCopyrightText: 2023-2025 The LineageOS Project
  * SPDX-License-Identifier: Apache-2.0
  */
 
 group = "org.lineageos"
-version = "1.17"
+version = "1.18"
 
 plugins {
     `kotlin-dsl`
