@@ -14,6 +14,11 @@ enum class License(
         Regex(".*www.apache.org/licenses/LICENSE-2.0\\..*"),
         Regex("http(s)?://api.github.com/licenses/apache-2.0"),
     ),
+    BSD_2_CLAUSE(
+        "BSD-2-Clause",
+        Regex("http(s)?://(www\\.)?opensource.org/licenses/bsd-2-clause"),
+        Regex("http(s)?://api.github.com/licenses/bsd-2-clause"),
+    ),
     BSD_3_CLAUSE(
         "BSD-3-Clause",
         Regex("http(s)?://(www\\.)?opensource.org/licenses/bsd-(license|3-clause)"),
