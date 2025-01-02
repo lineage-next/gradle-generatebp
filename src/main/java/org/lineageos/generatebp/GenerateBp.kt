@@ -362,8 +362,8 @@ internal class GenerateBp(
             File(file).let { manifest ->
                 manifest.writeText(
                     manifest.readText().replace(
-                        "android:minSdkVersion=: \"\\d+\"".toRegex(),
-                        "android:minSdkVersion=: \"${minSdk}\""
+                        "android:minSdkVersion=\"\\d+\"".toRegex(),
+                        "android:minSdkVersion=\"${minSdk}\""
                     )
                 )
             }
