@@ -9,12 +9,12 @@ import org.lineageos.generatebp.models.License
 
 object ReuseUtils {
     private const val SPDX_FILE_COPYRIGHT_TEXT_TEMPLATE = "SPDX-FileCopyrightText: %s\n"
-    private const val SPDX_LICENSE_IDENTIFIER_TEMPLATE = "SPDX-License-Identifier: %s"
+    private const val SPDX_LICENSE_IDENTIFIER_HEADER = "SPDX-License-Identifier: "
 
-    internal val currentYear = Year.now().value
+    private const val SPDX_LICENSE_IDENTIFIER_JOIN = " AND "
 
     fun generateReuseCopyrightContent(
-        license: License? = null,
+        licenses: List<License> = listOf(),
         copyrights: List<String> = listOf(),
         initialYear: Int? = null,
         addNewlineBetweenCopyrightAndLicense: Boolean = true,
@@ -32,12 +32,14 @@ object ReuseUtils {
             }
         }
 
-        license?.let {
+        licenses.distinct().takeIf { it.isNotEmpty() }?.let {
             if (addNewlineBetweenCopyrightAndLicense && copyrights.isNotEmpty()) {
                 append("\n")
             }
 
-            append(SPDX_LICENSE_IDENTIFIER_TEMPLATE.format(it.spdxId))
+            append(SPDX_LICENSE_IDENTIFIER_HEADER)
+
+            it.joinTo(this, SPDX_LICENSE_IDENTIFIER_JOIN) { license -> license.spdxId }
         }
 
         if (addEndingNewline && isNotEmpty()) {
