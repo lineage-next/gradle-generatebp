@@ -6,8 +6,6 @@
 package org.lineageos.generatebp.utils
 
 import org.lineageos.generatebp.models.License
-import java.io.File
-import java.time.Year
 
 object ReuseUtils {
     private const val SPDX_FILE_COPYRIGHT_TEXT_TEMPLATE = "SPDX-FileCopyrightText: %s\n"
@@ -46,22 +44,4 @@ object ReuseUtils {
             append("\n")
         }
     }
-
-    fun readInitialCopyrightYear(path: String) = runCatching {
-        File(path).readLines().firstOrNull {
-            it.contains("SPDX-FileCopyrightText:")
-        }?.let {
-            // Extract initial year from copyright text
-            Regex("\\d+").find(it)?.value?.toInt()
-        }
-    }.getOrNull()
-
-    fun readCurrentCopyrightYear(path: String) = runCatching {
-        File(path).readLines().firstOrNull {
-            it.contains("SPDX-FileCopyrightText:")
-        }?.let {
-            // Extract current year from copyright text
-            Regex("(?:\\d+-)?(\\d+)").find(it)?.groupValues?.last()?.toInt()
-        }
-    }.getOrNull()
 }
