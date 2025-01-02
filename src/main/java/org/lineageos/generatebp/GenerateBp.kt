@@ -8,7 +8,9 @@ package org.lineageos.generatebp
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ResolvedDependency
 import org.gradle.kotlin.dsl.get
-import org.lineageos.generatebp.ext.*
+import org.lineageos.generatebp.ext.indentWithSpaces
+import org.lineageos.generatebp.ext.recursiveDependencies
+import org.lineageos.generatebp.ext.spaces
 import org.lineageos.generatebp.models.Artifact
 import org.lineageos.generatebp.models.License
 import org.lineageos.generatebp.models.Module
