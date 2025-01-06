@@ -19,6 +19,15 @@ kotlin {
     jvmToolchain(17)
 }
 
+gradlePlugin {
+    plugins {
+        create("generateBp") {
+            id = "org.lineageos.generatebp"
+            implementationClass = "org.lineageos.generatebp.GenerateBpPlugin"
+        }
+    }
+}
+
 publishing {
     publications {
         create<MavenPublication>("pluginMaven") {
