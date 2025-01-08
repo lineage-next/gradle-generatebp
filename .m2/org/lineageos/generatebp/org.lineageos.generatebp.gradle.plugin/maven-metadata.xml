@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata>
-  <groupId>org.lineageos</groupId>
-  <artifactId>gradle-generatebp</artifactId>
+  <groupId>org.lineageos.generatebp</groupId>
+  <artifactId>org.lineageos.generatebp.gradle.plugin</artifactId>
   <versioning>
     <latest>1.20</latest>
     <release>1.20</release>
