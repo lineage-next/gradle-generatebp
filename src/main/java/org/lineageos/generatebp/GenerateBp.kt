@@ -121,22 +121,6 @@ internal class GenerateBp(
 
                 // Write license file
                 artifact.writeCopyrightFileForFile(filePath)
-
-                // Extract AndroidManifest.xml for AARs
-                if (artifact.file.extension == "aar") {
-                    project.copy {
-                        from(project.zipTree(filePath).matching {
-                            include("/AndroidManifest.xml")
-                        }.singleFile)
-                        into(dirPath)
-                    }
-
-                    // Write license file
-                    artifact.writeCopyrightFileForFile("${dirPath}/AndroidManifest.xml")
-
-                    // Update min SDK version in AndroidManifest.xml
-                    artifact.updateMinSdkInManifest("${dirPath}/AndroidManifest.xml", minSdk)
-                }
             }
 
             // Write Android.bp
@@ -159,7 +143,7 @@ internal class GenerateBp(
                                 """
 
                                 android_library_import {
-                                    name: "${it.aospModuleName}-nodeps",
+                                    name: "${it.aospModuleName}",
                                     aars: ["${it.aospModulePath}/${artifact.file.name}"],
                                     sdk_version: "${artifact.targetSdkVersion}",
                                     min_sdk_version: "$minSdk",
@@ -176,22 +160,9 @@ internal class GenerateBp(
                                     }
                                 }
                                 }
-    
-                                android_library {
-                                    name: "${it.aospModuleName}",
-                                    sdk_version: "${artifact.targetSdkVersion}",
-                                    min_sdk_version: "$minSdk",
-                                    apex_available: [
-                                        "//apex_available:platform",
-                                        "//apex_available:anyapex",
-                                    ],
-                                    manifest: "${it.aospModulePath}/AndroidManifest.xml",
-                                    static_libs: [%s],
-                                }
 
                                 """.trimIndent().format(
-                                    it.formatDependencies(false),
-                                    it.formatDependencies(true)
+                                    it.formatDependencies()
                                 )
                             )
                         }
@@ -201,18 +172,8 @@ internal class GenerateBp(
                                 """
     
                                 java_import {
-                                    name: "${it.aospModuleName}-nodeps",
-                                    jars: ["${it.aospModulePath}/${artifact.file.name}"],
-                                    sdk_version: "${artifact.targetSdkVersion}",
-                                    min_sdk_version: "$minSdk",
-                                    apex_available: [
-                                        "//apex_available:platform",
-                                        "//apex_available:anyapex",
-                                    ],
-                                }
-    
-                                java_library_static {
                                     name: "${it.aospModuleName}",
+                                    jars: ["${it.aospModulePath}/${artifact.file.name}"],
                                     sdk_version: "${artifact.targetSdkVersion}",
                                     min_sdk_version: "$minSdk",
                                     apex_available: [
@@ -223,7 +184,7 @@ internal class GenerateBp(
                                 }
 
                                 """.trimIndent().format(
-                                    it.formatDependencies(true)
+                                    it.formatDependencies()
                                 )
                             )
                         }
@@ -243,7 +204,7 @@ internal class GenerateBp(
                     }
 
                     """.trimIndent().format(
-                        it.formatDependencies(false)
+                        it.formatDependencies()
                     )
                 )
             }
@@ -267,15 +228,10 @@ internal class GenerateBp(
         !isKotlinBom(module) && !isKotlinStdlibCommon(module)
     }
 
-    private fun Module.formatDependencies(addNoDependencies: Boolean): String {
+    private fun Module.formatDependencies(): String {
         val aospDependencies = dependencies.asSequence().filter(isValidAospModule).distinct().map {
             it.aospModuleName
         }.sorted().toMutableList()
-
-        if (addNoDependencies) {
-            // Add -nodeps dependency for android_library/java_library_static
-            aospDependencies.add(0, "${aospModuleName}-nodeps")
-        }
 
         return aospDependencies.map {
             "\"${it}\","
@@ -355,17 +311,6 @@ internal class GenerateBp(
         private fun Artifact.writeCopyrightFileForFile(file: String) {
             reuseCopyrightFileContent.takeIf { it.isNotEmpty() }?.let {
                 File("$file.license").writeText(it)
-            }
-        }
-
-        private fun Artifact.updateMinSdkInManifest(file: String, minSdk: Int) {
-            File(file).let { manifest ->
-                manifest.writeText(
-                    manifest.readText().replace(
-                        "android:minSdkVersion=\"\\d+\"".toRegex(),
-                        "android:minSdkVersion=\"${minSdk}\""
-                    )
-                )
             }
         }
     }
