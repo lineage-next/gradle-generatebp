@@ -11,7 +11,7 @@ enum class License(
 ) {
     APACHE_2_0(
         "Apache-2.0",
-        Regex(".*www.apache.org/licenses/LICENSE-2.0\\..*"),
+        Regex(".*www.apache.org/license(s)?/LICENSE-2.0\\..*"),
         Regex("http(s)?://api.github.com/licenses/apache-2.0"),
     ),
     BSD_2_CLAUSE(
