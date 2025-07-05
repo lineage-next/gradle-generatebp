@@ -66,19 +66,6 @@ java_import {
 }
 
 java_import {
-    name: "Example_com.google.guava_listenablefuture",
-    jars: ["com/google/guava/listenablefuture/1.0/listenablefuture-1.0.jar"],
-    sdk_version: "34",
-    min_sdk_version: "26",
-    apex_available: [
-        "//apex_available:platform",
-        "//apex_available:anyapex",
-    ],
-    static_libs: [
-    ],
-}
-
-java_import {
     name: "Example_com.squareup.okhttp3_okhttp",
     jars: ["com/squareup/okhttp3/okhttp/4.12.0/okhttp-4.12.0.jar"],
     sdk_version: "34",
