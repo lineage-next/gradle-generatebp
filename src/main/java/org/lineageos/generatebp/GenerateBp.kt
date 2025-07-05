@@ -108,6 +108,11 @@ internal class GenerateBp(
                 return@forEach
             }
 
+            // Skip modules nothing depends on
+            if (!it.hasAnyDependents()) {
+                return@forEach
+            }
+
             // Create dir
             libsBase.mkdirs()
 
@@ -226,6 +231,12 @@ internal class GenerateBp(
     }
     private val isValidAospModule = { module: Module ->
         !isKotlinBom(module) && !isKotlinStdlibCommon(module)
+    }
+
+    private fun Module.hasAnyDependents(): Boolean {
+        return projectDependencies.contains(this) || allDependencies.any { dep ->
+            !isAvailableInAOSP(dep) && dep.dependencies.contains(this)
+        }
     }
 
     private fun Module.formatDependencies(): String {
