@@ -15,10 +15,6 @@ repositories {
     mavenCentral()
 }
 
-kotlin {
-    jvmToolchain(17)
-}
-
 gradlePlugin {
     plugins {
         create("generateBp") {
