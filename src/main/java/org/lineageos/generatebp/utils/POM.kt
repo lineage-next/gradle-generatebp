@@ -10,6 +10,8 @@ import groovy.util.NodeList
 import groovy.xml.XmlParser
 import org.lineageos.generatebp.models.License
 import org.lineageos.generatebp.models.Module
+import org.lineageos.generatebp.utils.Logger.debug
+import org.lineageos.generatebp.utils.Logger.info
 import java.io.File
 import java.nio.file.Paths
 
@@ -49,13 +51,13 @@ class POM(
     private fun parseInceptionYear(pomNode: Node, module: Module): Int? {
         val inceptionYearNode =
             (pomNode["inceptionYear"] as NodeList).firstOrNull() as Node? ?: run {
-                Logger.debug(
+                debug(
                     "Inception year node in POM not found for ${module.gradleName}, trying with parent"
                 )
                 return parseParent(pomNode, module)?.let {
                     parseInceptionYear(it)
                 } ?: run {
-                    Logger.debug(
+                    debug(
                         "Inception year node in POM not found for ${module.gradleName} and no parent available"
                     )
                     return null
@@ -67,13 +69,13 @@ class POM(
 
     private fun parseOrganizationName(pomNode: Node, module: Module): String? {
         val organizationNode = (pomNode["organization"] as NodeList).firstOrNull() as Node? ?: run {
-            Logger.debug(
+            debug(
                 "Organization node in POM not found for ${module.gradleName}, trying with parent"
             )
             return parseParent(pomNode, module)?.let {
                 parseOrganizationName(it)
             } ?: run {
-                Logger.debug(
+                debug(
                     "Organization node in POM not found for ${module.gradleName} and no parent available"
                 )
                 return null
@@ -82,7 +84,7 @@ class POM(
 
         return (organizationNode.get("name") as NodeList?)?.text()
             ?: run {
-                Logger.debug("Name not found for ${module.gradleName}'s organization")
+                debug("Name not found for ${module.gradleName}'s organization")
                 return null
             }
     }
@@ -95,13 +97,13 @@ class POM(
      */
     private fun parseLicenses(pomNode: Node, module: Module): List<License> {
         val licensesNode = (pomNode["licenses"] as NodeList).firstOrNull() as Node? ?: run {
-            Logger.debug(
+            debug(
                 "Licenses node in POM not found for ${module.gradleName}, trying with parent"
             )
             return parseParent(pomNode, module)?.let {
                 parseLicenses(it)
             } ?: run {
-                Logger.debug(
+                debug(
                     "Licenses node in POM not found for ${module.gradleName} and no parent available"
                 )
                 return listOf()
@@ -113,11 +115,11 @@ class POM(
         }.mapNotNull { licenseNode ->
             (licenseNode.get("url") as NodeList?)?.text()?.let {
                 License.fromUrl(it) ?: run {
-                    Logger.info("Unknown license URL $it")
+                    info("Unknown license URL $it")
                     null
                 }
             } ?: run {
-                Logger.debug("License URL not found for ${module.gradleName}")
+                debug("License URL not found for ${module.gradleName}")
                 null
             }
         }
@@ -131,13 +133,13 @@ class POM(
      */
     private fun parseDevelopersNames(pomNode: Node, module: Module): List<String> {
         val developersNode = (pomNode["developers"] as NodeList).firstOrNull() as Node? ?: run {
-            Logger.debug(
+            debug(
                 "Developers node in POM not found for ${module.gradleName}, trying with parent"
             )
             return parseParent(pomNode, module)?.let {
                 parseDevelopersNames(it)
             } ?: run {
-                Logger.debug(
+                debug(
                     "Developers node in POM not found for ${module.gradleName} and no parent available"
                 )
                 return listOf()
@@ -161,7 +163,7 @@ class POM(
     private fun parseDependencies(pomNode: Node, module: Module): List<Module> {
         val dependenciesNode = (pomNode["dependencies"] as NodeList).firstOrNull() as Node?
             ?: run {
-                Logger.debug("Dependencies node in POM not found for ${module.gradleName}")
+                debug("Dependencies node in POM not found for ${module.gradleName}")
                 return listOf()
             }
 
@@ -228,7 +230,7 @@ class POM(
     private fun parseParent(pomNode: Node, module: Module): Module? {
         val parentNode = (pomNode["parent"] as NodeList).firstOrNull() as Node?
             ?: run {
-                Logger.debug("Parent node in POM not found for ${module.gradleName}")
+                debug("Parent node in POM not found for ${module.gradleName}")
                 return null
             }
 
@@ -274,7 +276,7 @@ class POM(
             require(poms.isNotEmpty()) { "No POM found for artifact ${artifactDir.path}" }
 
             if (poms.size > 1) {
-                Logger.debug("Multiple POMs found for ${artifactDir.path}, using the first one")
+                debug("Multiple POMs found for ${artifactDir.path}, using the first one")
             }
 
             return poms.first()

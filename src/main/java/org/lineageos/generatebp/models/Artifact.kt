@@ -9,7 +9,7 @@ import groovy.util.Node
 import groovy.util.NodeList
 import groovy.xml.XmlParser
 import org.gradle.api.artifacts.ResolvedArtifact
-import org.lineageos.generatebp.utils.Logger
+import org.lineageos.generatebp.utils.Logger.info
 import org.lineageos.generatebp.utils.POM
 import org.lineageos.generatebp.utils.ReuseUtils
 import java.io.File
@@ -97,7 +97,7 @@ data class Artifact(
 
     val reuseCopyrightFileContent by lazy {
         if (licenses.isEmpty()) {
-            Logger.info("No license found for module ${module.gradleName}")
+            info("No license found for module ${module.gradleName}")
         }
 
         val copyrights = organizationName?.let {
@@ -105,7 +105,7 @@ data class Artifact(
         } ?: developersNames
 
         if (copyrights.isEmpty()) {
-            Logger.info("No copyright found for ${module.gradleName}")
+            info("No copyright found for ${module.gradleName}")
         }
 
         ReuseUtils.generateReuseCopyrightContent(licenses, copyrights, inceptionYear)

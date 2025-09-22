@@ -7,7 +7,7 @@ package org.lineageos.generatebp.models
 
 import org.gradle.api.artifacts.ModuleVersionIdentifier
 import org.gradle.api.artifacts.ResolvedDependency
-import org.lineageos.generatebp.utils.Logger
+import org.lineageos.generatebp.utils.Logger.debug
 import kotlin.reflect.safeCast
 
 /**
@@ -66,7 +66,7 @@ data class Module(
             }?.toSet() ?: setOf(),
             it.moduleArtifacts.also {
                 if (it.size > 1) {
-                    Logger.debug("Multiple artifacts found, using first one: $it")
+                    debug("Multiple artifacts found, using first one: $it")
                 }
             }.firstOrNull()?.let { resolvedArtifact ->
                 Artifact.fromResolvedArtifact(resolvedArtifact, targetSdk)
