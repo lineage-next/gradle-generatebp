@@ -12,7 +12,7 @@ import org.gradle.kotlin.dsl.create
 class GenerateBpPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         val extension = project.extensions.create<GenerateBpPluginExtension>("generateBp")
-        project.task("generateBp") {
+        project.tasks.register("generateBp") {
             doLast {
                 GenerateBp(
                     project,
