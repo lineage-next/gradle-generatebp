@@ -1,0 +1,31 @@
+#
+# SPDX-FileCopyrightText: 2025 The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+
+[versions]
+agp = "8.12.3"
+kotlin = "1.9.23"
+appcompat = "1.6.1"
+coil = "3.0.0-rc02"
+core = "1.12.0"
+junit = "4.13.2"
+material = "1.12.0"
+test-ext = "1.1.5"
+test-espresso = "3.5.1"
+generateBp = "+"
+
+[libraries]
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core" }
+coil = { group = "io.coil-kt.coil3", name = "coil", version.ref = "coil" }
+coil-network-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "test-ext" }
+test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "test-espresso" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+lineageos-generatebp = { id = "org.lineageos.generatebp", version.ref = "generateBp" }
