@@ -31,13 +31,12 @@ android_library_import {
         "//apex_available:anyapex",
     ],
     static_libs: [
-        "Example_com.google.errorprone_error_prone_annotations",
-        "androidx-constraintlayout_constraintlayout",
         "androidx.activity_activity",
         "androidx.annotation_annotation",
         "androidx.annotation_annotation-experimental",
         "androidx.appcompat_appcompat",
         "androidx.cardview_cardview",
+        "androidx-constraintlayout_constraintlayout",
         "androidx.coordinatorlayout_coordinatorlayout",
         "androidx.core_core",
         "androidx.drawerlayout_drawerlayout",
@@ -49,6 +48,7 @@ android_library_import {
         "androidx.transition_transition",
         "androidx.vectordrawable_vectordrawable",
         "androidx.viewpager2_viewpager2",
+        "Example_com.google.errorprone_error_prone_annotations",
     ],
 }
 
@@ -158,13 +158,13 @@ android_library_import {
         "//apex_available:anyapex",
     ],
     static_libs: [
-        "Example_androidx.core_core-ktx",
-        "Example_com.squareup.okio_okio",
         "androidx.annotation_annotation",
         "androidx.appcompat_appcompat-resources",
+        "Example_androidx.core_core-ktx",
         "androidx.exifinterface_exifinterface",
         "androidx.lifecycle_lifecycle-runtime",
         "androidx.profileinstaller_profileinstaller",
+        "Example_com.squareup.okio_okio",
         "kotlin-stdlib",
         "kotlinx-coroutines-android",
         "kotlinx-coroutines-core",

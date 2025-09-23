@@ -1,81 +1,24 @@
 /*
- * SPDX-FileCopyrightText: 2023-2024 The LineageOS Project
+ * SPDX-FileCopyrightText: 2023-2025 The LineageOS Project
  * SPDX-License-Identifier: Apache-2.0
  */
 
 package org.lineageos.generatebp.models
 
-import org.gradle.api.artifacts.ModuleVersionIdentifier
-import org.gradle.api.artifacts.ResolvedDependency
-import org.lineageos.generatebp.utils.Logger.debug
-import kotlin.reflect.safeCast
-
 /**
  * A Gradle module.
- * @param group The group name
- * @param name The name of the module
- * @param version The version of the module, set to "any" by default. This field is ignored for
- *                comparison and it's only used for [aospModulePath]
+ *
  * @param dependencies The dependencies of the module
  * @param artifact The artifact of this module
+ * @param treatAsFirstLevelDependency AAR with only JAR parents. Whether this module is a dependency
+ *   of modules without a AAR artifact and this module includes a AAR artifact. This is needed to
+ *   include non-code assets for this module since a JAR target can only include Java libraries
  */
-data class Module(
-    val group: String,
-    val name: String,
-    val version: String = VERSION_ANY,
-    val dependencies: Set<Module> = setOf(),
-    val artifact: Artifact? = null,
-    val hasJarParentedArtifacts: Boolean = false,
-) : Comparable<Module> {
-    override fun equals(other: Any?) = Module::class.safeCast(other)?.let {
-        compareTo(it) == 0
-    } ?: false
-
-    override fun hashCode(): Int {
-        var result = group.hashCode()
-        result = 31 * result + name.hashCode()
-        return result
-    }
-
-    override fun compareTo(other: Module) = compareValuesBy(
-        this, other,
-        { it.group },
-        { it.name },
-    )
-
-    val gradleName = "$group:$name:$version"
-
-    val aospModulePath = "${group.replace(".", "/")}/${name}/${version}"
-
-    companion object {
-        private const val VERSION_ANY = "any"
-
-        fun fromModuleVersionIdentifier(it: ModuleVersionIdentifier) =
-            Module(it.group, it.name, it.version)
-
-        fun fromResolvedDependency(
-            it: ResolvedDependency,
-            targetSdk: Int,
-            skipDependencies: Boolean = false,
-        ): Module = Module(
-            it.moduleGroup,
-            it.moduleName,
-            it.moduleVersion,
-            it.takeUnless { skipDependencies }?.children?.map {
-                fromResolvedDependency(it, targetSdk, true)
-            }?.toSet() ?: setOf(),
-            it.moduleArtifacts.also {
-                if (it.size > 1) {
-                    debug("Multiple artifacts found, using first one: $it")
-                }
-            }.firstOrNull()?.let { resolvedArtifact ->
-                Artifact.fromResolvedArtifact(resolvedArtifact, targetSdk)
-            },
-            it.parents.all { parents ->
-                parents.moduleArtifacts.all { it.extension == "jar" }
-            } && it.moduleArtifacts.any {
-                it.extension == "aar"
-            },
-        )
-    }
-}
+class Module(
+    group: String,
+    name: String,
+    version: String,
+    val dependencies: Set<ModuleIdentifier>,
+    val artifact: Artifact?,
+    val treatAsFirstLevelDependency: Boolean,
+) : ModuleIdentifier(group, name, version)
