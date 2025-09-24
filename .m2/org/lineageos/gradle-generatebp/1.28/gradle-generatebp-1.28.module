@@ -3,14 +3,14 @@
   "component": {
     "group": "org.lineageos",
     "module": "gradle-generatebp",
-    "version": "1.26",
+    "version": "1.28",
     "attributes": {
       "org.gradle.status": "release"
     }
   },
   "createdBy": {
     "gradle": {
-      "version": "8.10.2"
+      "version": "8.14.3"
     }
   },
   "variants": [
@@ -27,13 +27,13 @@
       },
       "files": [
         {
-          "name": "gradle-generatebp-1.26.jar",
-          "url": "gradle-generatebp-1.26.jar",
-          "size": 87261,
-          "sha512": "4600b9af33e4b6d8f95ef910a6718a577948bcb9437c109061f1c00ce47fda0ebe5b63e071ff86d4ee4b5c38ca3f1af261829a8b7aefbc1aa9c9b2806fe6ff4a",
-          "sha256": "1271cd7644199e3c0921f2b8ef409d277d513a02fe185c31d85cc4945421116f",
-          "sha1": "8202953a03f1b0d81b35d341c7e1d9f6199fbf15",
-          "md5": "1bad3c8570112891013a366eea17e09a"
+          "name": "gradle-generatebp-1.28.jar",
+          "url": "gradle-generatebp-1.28.jar",
+          "size": 89878,
+          "sha512": "600f05d77255813149e5cef67f7b381b658766527e26ed367155aee8ab641378e26d9fd3f88ab3f604f1152dbd2500f5c5ff77253a1a5198a8d9fd2d21b59329",
+          "sha256": "01c546d646afa53a9ba16b923daf49ed3eb41d2bb38880f579193317e0a2758b",
+          "sha1": "cb5d5d97a6b69a850ea4abd8cfdea33fff9389b0",
+          "md5": "4204e3bbd1cd06c434cac878403cf041"
         }
       ]
     },
@@ -50,13 +50,13 @@
       },
       "files": [
         {
-          "name": "gradle-generatebp-1.26.jar",
-          "url": "gradle-generatebp-1.26.jar",
-          "size": 87261,
-          "sha512": "4600b9af33e4b6d8f95ef910a6718a577948bcb9437c109061f1c00ce47fda0ebe5b63e071ff86d4ee4b5c38ca3f1af261829a8b7aefbc1aa9c9b2806fe6ff4a",
-          "sha256": "1271cd7644199e3c0921f2b8ef409d277d513a02fe185c31d85cc4945421116f",
-          "sha1": "8202953a03f1b0d81b35d341c7e1d9f6199fbf15",
-          "md5": "1bad3c8570112891013a366eea17e09a"
+          "name": "gradle-generatebp-1.28.jar",
+          "url": "gradle-generatebp-1.28.jar",
+          "size": 89878,
+          "sha512": "600f05d77255813149e5cef67f7b381b658766527e26ed367155aee8ab641378e26d9fd3f88ab3f604f1152dbd2500f5c5ff77253a1a5198a8d9fd2d21b59329",
+          "sha256": "01c546d646afa53a9ba16b923daf49ed3eb41d2bb38880f579193317e0a2758b",
+          "sha1": "cb5d5d97a6b69a850ea4abd8cfdea33fff9389b0",
+          "md5": "4204e3bbd1cd06c434cac878403cf041"
         }
       ]
     }
