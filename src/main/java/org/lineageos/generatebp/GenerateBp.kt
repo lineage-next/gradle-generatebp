@@ -19,7 +19,7 @@ import org.lineageos.generatebp.models.Module
 import org.lineageos.generatebp.models.ModuleIdentifier
 import org.lineageos.generatebp.models.ModuleQuirk
 import org.lineageos.generatebp.utils.Constants
-import org.lineageos.generatebp.utils.Constants.getAospModuleNameFixup
+import org.lineageos.generatebp.utils.Constants.getAospAvailableModuleName
 import org.lineageos.generatebp.utils.Constants.getModuleQuirk
 import org.lineageos.generatebp.utils.ReuseUtils.writeCopyrightFileForFile
 import java.io.File
@@ -220,7 +220,7 @@ internal class GenerateBp(
      * Get the name of this [ModuleIdentifier] in the AOSP build system.
      */
     private fun ModuleIdentifier.getAospModuleName() = when (isAvailableInAOSP(getModule())) {
-        true -> getAospModuleNameFixup() ?: "${group}_${name}"
+        true -> getAospAvailableModuleName()
         false -> "${project.rootProject.name}_${group}_${name}"
     }
 

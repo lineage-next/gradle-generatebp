@@ -30,6 +30,19 @@ object Constants {
     }
 
     /**
+     * Per `prebuilts/sdk/update_prebuilts/update_prebuilts.py`:
+     * ```python
+     * # Suffixes used by KMP artifacts. If an artifact in maven_to_make ends with one
+     * # of these, it will replace the anchor artifact.
+     * kmp_suffixes = ['android','jvm']
+     * ```
+     */
+    private val androidXKmpSuffixes = setOf(
+        "-android",
+        "-jvm",
+    )
+
+    /**
      * Return the [ModuleQuirk] to apply to this [ModuleIdentifier].
      */
     fun ModuleIdentifier.getModuleQuirk() = when (group) {
@@ -45,90 +58,9 @@ object Constants {
     /**
      * Get the name of this module in the AOSP build system.
      */
-    fun ModuleIdentifier.getAospModuleNameFixup() = when (group) {
-        "androidx.annotation" -> when (name) {
-            "annotation-jvm" -> "androidx.annotation_annotation"
-            else -> null
-        }
-
+    fun ModuleIdentifier.getAospAvailableModuleName() = fixupAndroidXKmpSuffix() ?: when (group) {
         "androidx.constraintlayout" -> when (name) {
             "constraintlayout" -> "androidx-constraintlayout_constraintlayout"
-            else -> null
-        }
-
-        "androidx.compose.animation" -> when (name) {
-            "animation-android" -> "androidx.compose.animation_animation"
-            "animation-core-android" -> "androidx.compose.animation_animation-core"
-            else -> null
-        }
-
-        "androidx.compose.foundation" -> when (name) {
-            "foundation-android" -> "androidx.compose.foundation_foundation"
-            "foundation-layout-android" -> "androidx.compose.foundation_foundation-layout"
-            else -> null
-        }
-
-        "androidx.compose.material" -> when (name) {
-            "material-android" -> "androidx.compose.material_material"
-            "material-icons-core-android" -> "androidx.compose.material_material-icons-core"
-            "material-ripple-android" -> "androidx.compose.material_material-ripple"
-            else -> null
-        }
-
-        "androidx.compose.material3" -> when (name) {
-            "material3-android" -> "androidx.compose.material3_material3"
-            else -> null
-        }
-
-        "androidx.compose.runtime" -> when (name) {
-            "runtime-android" -> "androidx.compose.runtime_runtime"
-            "runtime-saveable-android" -> "androidx.compose.runtime_runtime-saveable"
-            else -> null
-        }
-
-        "androidx.compose.ui" -> when (name) {
-            "ui-android" -> "androidx.compose.ui_ui"
-            "ui-geometry-android" -> "androidx.compose.ui_ui-geometry"
-            "ui-graphics-android" -> "androidx.compose.ui_ui-graphics"
-            "ui-text-android" -> "androidx.compose.ui_ui-text"
-            "ui-tooling-preview-android" -> "androidx.compose.ui_ui-tooling-preview"
-            "ui-unit-android" -> "androidx.compose.ui_ui-unit"
-            "ui-util-android" -> "androidx.compose.ui_ui-util"
-            else -> null
-        }
-
-        "androidx.graphics" -> when (name) {
-            "graphics-shapes-android" -> "androidx.graphics_graphics-shapes"
-            else -> null
-        }
-
-        "androidx.lifecycle" -> when (name) {
-            "lifecycle-runtime-android" -> "androidx.lifecycle_lifecycle-runtime"
-            "lifecycle-runtime-compose-android" -> "androidx.lifecycle_lifecycle-runtime-compose"
-            "lifecycle-runtime-ktx-android" -> "androidx.lifecycle_lifecycle-runtime-ktx"
-            "lifecycle-viewmodel-savedstate-android" -> "androidx.lifecycle_lifecycle-viewmodel-savedstate"
-            else -> null
-        }
-
-        "androidx.navigation" -> when (name) {
-            "navigation-common-android" -> "androidx.navigation_navigation-common"
-            "navigation-runtime-android" -> "androidx.navigation_navigation-runtime"
-            else -> null
-        }
-
-        "androidx.room" -> when (name) {
-            "room-runtime-android" -> "androidx.room_room-runtime"
-            else -> null
-        }
-
-        "androidx.savedstate" -> when (name) {
-            "savedstate-android" -> "androidx.savedstate_savedstate"
-            else -> null
-        }
-
-        "androidx.sqlite" -> when (name) {
-            "sqlite-android" -> "androidx.sqlite_sqlite"
-            "sqlite-framework-android" -> "androidx.sqlite_sqlite-framework"
             else -> null
         }
 
@@ -139,11 +71,6 @@ object Constants {
             "espresso-idling-resource" -> "androidx.test.espresso.idling-resource"
             "espresso-intents" -> "androidx.test.espresso.intents"
             "espresso-web" -> "androidx.test.espresso.web"
-            else -> null
-        }
-
-        "androidx.window" -> when (name) {
-            "window-core-android" -> "androidx.window_window-core"
             else -> null
         }
 
@@ -242,5 +169,19 @@ object Constants {
         }
 
         else -> null
+    } ?: "${group}_${name}"
+
+    /**
+     * @see Constants.androidXKmpSuffixes
+     */
+    private fun ModuleIdentifier.fixupAndroidXKmpSuffix() = when (group.startsWith("androidx.")) {
+        true -> androidXKmpSuffixes.firstNotNullOfOrNull {
+            when (name.endsWith(it)) {
+                true -> "${group}_${name.removeSuffix(it)}"
+                false -> null
+            }
+        }
+
+        false -> null
     }
 }
