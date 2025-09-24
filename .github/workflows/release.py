@@ -17,11 +17,11 @@ with open("build.gradle.kts", "r+") as f:
     f.seek(0)
     f.write(lines)
 
-with open("example/app/build.gradle.kts", "r+") as f:
+with open("example/settings.gradle.kts", "r+") as f:
     lines = f.read().replace(f"/v{version}/", f"/v{version_new}/")
     f.seek(0)
     f.write(lines)
 
 subprocess.run(["git", "tag", f"v{version}"])
-subprocess.run(["git", "add", "build.gradle.kts", "example/app/build.gradle.kts"])
+subprocess.run(["git", "add", "build.gradle.kts", "example/settings.gradle.kts"])
 subprocess.run(["git", "commit", "-m", "Bump version"])
