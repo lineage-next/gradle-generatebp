@@ -91,9 +91,10 @@ internal class GenerateBp(
                 append(Constants.SHARED_LIBS_HEADER.indentWithSpaces(8))
                 append("\n")
                 append(
-                    appSharedLibs.sorted().map {
-                        "\"${it.getAospModuleName()}\","
-                    }.indentWithSpaces(8).joinToString("\n")
+                    appSharedLibs.asSequence()
+                        .mapToAospModuleNames()
+                        .indentWithSpaces(8)
+                        .joinToString("\n")
                 )
                 append("\n${spaces(4)}")
             }
@@ -253,11 +254,18 @@ internal class GenerateBp(
      */
     private fun Module.formatDependencies() = dependencies.asSequence()
         .applyQuirks()
+        .mapToAospModuleNames()
+        .indentWithSpaces(8)
+        .joinToString(separator = "", postfix = "\n${spaces(4)}") { "\n$it" }
+
+    /**
+     * Get a formatted list of AOSP module names for a blueprint list of strings.
+     */
+    private fun Sequence<ModuleIdentifier>.mapToAospModuleNames() = this
         .distinct()
         .sorted()
         .map { "\"${it.getAospModuleName()}\"," }
-        .indentWithSpaces(8)
-        .joinToString(separator = "", postfix = "\n${spaces(4)}") { "\n$it" }
+        .distinct()
 
     /**
      * Recursively apply the effects of the quirks to this [Sequence] of [ModuleIdentifier]s.
