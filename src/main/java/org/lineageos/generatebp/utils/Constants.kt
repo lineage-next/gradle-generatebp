@@ -74,6 +74,16 @@ object Constants {
             else -> null
         }
 
+        "androidx.tracing" -> when (name) {
+            "tracing" -> "androidx.tracing_tracing"
+            "tracing-android" -> "androidx.tracing_tracing"
+            "tracing-ktx" -> "androidx.tracing_tracing-ktx"
+            "tracing-perfetto" -> "androidx.tracing_tracing-perfetto"
+            "tracing-perfetto-binary" -> "androidx.tracing_tracing-perfetto-binary"
+            "tracing-perfetto-handshake" -> "androidx.tracing_tracing-perfetto-handshake"
+            else -> null
+        }
+
         "com.adobe.xmp" -> when (name) {
             "xmpcore" -> "xmp_toolkit"
             else -> null
