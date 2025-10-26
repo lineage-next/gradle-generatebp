@@ -138,11 +138,6 @@ object Constants {
             else -> null
         }
 
-        "jakarta.inject" -> when (name) {
-            "jakarta.inject-api" -> "jakarta.inject"
-            else -> null
-        }
-
         "javax.inject" -> when (name) {
             "javax.inject" -> "jsr330"
             else -> null
