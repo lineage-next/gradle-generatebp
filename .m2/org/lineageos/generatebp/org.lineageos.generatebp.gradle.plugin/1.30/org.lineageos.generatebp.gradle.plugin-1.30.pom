@@ -3,13 +3,13 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.lineageos.generatebp</groupId>
   <artifactId>org.lineageos.generatebp.gradle.plugin</artifactId>
-  <version>1.29</version>
+  <version>1.30</version>
   <packaging>pom</packaging>
   <dependencies>
     <dependency>
       <groupId>org.lineageos</groupId>
       <artifactId>gradle-generatebp</artifactId>
-      <version>1.29</version>
+      <version>1.30</version>
     </dependency>
   </dependencies>
 </project>

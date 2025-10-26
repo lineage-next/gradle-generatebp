@@ -3,14 +3,14 @@
   "component": {
     "group": "org.lineageos",
     "module": "gradle-generatebp",
-    "version": "1.29",
+    "version": "1.30",
     "attributes": {
       "org.gradle.status": "release"
     }
   },
   "createdBy": {
     "gradle": {
-      "version": "8.14.3"
+      "version": "9.1.0"
     }
   },
   "variants": [
@@ -27,13 +27,13 @@
       },
       "files": [
         {
-          "name": "gradle-generatebp-1.29.jar",
-          "url": "gradle-generatebp-1.29.jar",
-          "size": 89198,
-          "sha512": "5b9927cf31002376206b5ee131bd37c5d11cc6c5edeb5ad60623ed255a9058deece2cc611bec5e9fd924c630b763e152bd7df04ea6de1a1c6e55f5a0a11382e2",
-          "sha256": "c99940107493447d30f174c80fe9f29009cb07d471837b327e45e7746099451e",
-          "sha1": "7414d7b5b388702c9fa07755774acd6c4dfc08a6",
-          "md5": "6839c40590b2a764548d2bf81dada163"
+          "name": "gradle-generatebp-1.30.jar",
+          "url": "gradle-generatebp-1.30.jar",
+          "size": 78865,
+          "sha512": "c97cd28d1af779b0f38021531a06ac3a8645e84517854ed06a033dd73b983de77006ddd619d4053646079140025fdbdd6214fb0472ad092260a2ad9324d5b423",
+          "sha256": "0e031b77d75129842fdc882e55d22eb4e6ae41346baea9b261f829cc988cac9f",
+          "sha1": "1dd6b86ee33d35ac851ee0ade59c5fb25512ea0e",
+          "md5": "9c24fc84fda42be10b111ff3c563a3bb"
         }
       ]
     },
@@ -50,13 +50,13 @@
       },
       "files": [
         {
-          "name": "gradle-generatebp-1.29.jar",
-          "url": "gradle-generatebp-1.29.jar",
-          "size": 89198,
-          "sha512": "5b9927cf31002376206b5ee131bd37c5d11cc6c5edeb5ad60623ed255a9058deece2cc611bec5e9fd924c630b763e152bd7df04ea6de1a1c6e55f5a0a11382e2",
-          "sha256": "c99940107493447d30f174c80fe9f29009cb07d471837b327e45e7746099451e",
-          "sha1": "7414d7b5b388702c9fa07755774acd6c4dfc08a6",
-          "md5": "6839c40590b2a764548d2bf81dada163"
+          "name": "gradle-generatebp-1.30.jar",
+          "url": "gradle-generatebp-1.30.jar",
+          "size": 78865,
+          "sha512": "c97cd28d1af779b0f38021531a06ac3a8645e84517854ed06a033dd73b983de77006ddd619d4053646079140025fdbdd6214fb0472ad092260a2ad9324d5b423",
+          "sha256": "0e031b77d75129842fdc882e55d22eb4e6ae41346baea9b261f829cc988cac9f",
+          "sha1": "1dd6b86ee33d35ac851ee0ade59c5fb25512ea0e",
+          "md5": "9c24fc84fda42be10b111ff3c563a3bb"
         }
       ]
     }
