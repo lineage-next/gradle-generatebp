@@ -28,6 +28,14 @@ android_app {
         "kotlin-stdlib",
     ],
 
+    aaptflags: [
+        // DO NOT EDIT THIS SECTION MANUALLY
+        "--version-name",
+        "1.0",
+        "--version-code",
+        "1",
+    ],
+
     optimize: {
         proguard_flags_files: ["proguard-rules.pro"],
     },
