@@ -28,6 +28,8 @@ internal class GenerateBp(
     private val project: Project,
     private val targetSdk: Int,
     private val minSdk: Int,
+    private val versionCode: Int,
+    private val versionName: String,
     private val isAvailableInAOSP: (module: Module) -> Boolean,
     private val libsBase: File = File("${project.projectDir.absolutePath}/libs"),
 ) {
@@ -86,6 +88,23 @@ internal class GenerateBp(
 
         // Update app/Android.bp
         File("${project.projectDir.absolutePath}/Android.bp").let { file ->
+            val aaptFlagsString = buildString {
+                append("\n")
+                append(Constants.SHARED_LIBS_HEADER.indentWithSpaces(8))
+                append("\n")
+                append(
+                    listOf(
+                        "--version-name",
+                        versionName,
+                        "--version-code",
+                        versionCode,
+                    )
+                        .map { "\"$it\"," }
+                        .indentWithSpaces(8)
+                        .joinToString("\n")
+                )
+                append("\n${spaces(4)}")
+            }
             val dependenciesString = buildString {
                 append("\n")
                 append(Constants.SHARED_LIBS_HEADER.indentWithSpaces(8))
@@ -101,6 +120,10 @@ internal class GenerateBp(
 
             file.writeText(
                 file.readText().replace(
+                    // Replace existing dependencies with newly generated ones
+                    "aaptflags: \\[.*?]".toRegex(RegexOption.DOT_MATCHES_ALL),
+                    "aaptflags: [%s]".format(aaptFlagsString)
+                ).replace(
                     // Replace existing dependencies with newly generated ones
                     "static_libs: \\[.*?]".toRegex(RegexOption.DOT_MATCHES_ALL),
                     "static_libs: [%s]".format(dependenciesString)
