@@ -90,7 +90,7 @@ internal class GenerateBp(
         File("${project.projectDir.absolutePath}/Android.bp").let { file ->
             val aaptFlagsString = buildString {
                 append("\n")
-                append(Constants.SHARED_LIBS_HEADER.indentWithSpaces(8))
+                append(Constants.DO_NOT_EDIT_HEADER.indentWithSpaces(8))
                 append("\n")
                 append(
                     listOf(
@@ -107,7 +107,7 @@ internal class GenerateBp(
             }
             val dependenciesString = buildString {
                 append("\n")
-                append(Constants.SHARED_LIBS_HEADER.indentWithSpaces(8))
+                append(Constants.DO_NOT_EDIT_HEADER.indentWithSpaces(8))
                 append("\n")
                 append(
                     appSharedLibs.asSequence()
