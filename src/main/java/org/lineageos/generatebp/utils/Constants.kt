@@ -10,7 +10,7 @@ import org.lineageos.generatebp.models.ModuleIdentifier
 import org.lineageos.generatebp.models.ModuleQuirk
 
 object Constants {
-    const val SHARED_LIBS_HEADER = "// DO NOT EDIT THIS SECTION MANUALLY"
+    const val DO_NOT_EDIT_HEADER = "// DO NOT EDIT THIS SECTION MANUALLY"
 
     val libsAndroidBpHeader = buildString {
         append("//\n")
