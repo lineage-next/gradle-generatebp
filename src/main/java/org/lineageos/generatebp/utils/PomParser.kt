@@ -14,20 +14,19 @@ import org.lineageos.generatebp.models.Pom
 import org.lineageos.generatebp.utils.Logger.debug
 import org.lineageos.generatebp.utils.Logger.info
 import java.io.File
-import java.nio.file.Paths
 
 /**
  * A class representing a POM.
  *
  * @param file the POM itself
  * @param moduleIdentifier The [ModuleIdentifier] to which this POM belongs to
+ * @param pomResolver The [PomResolver] used to find parent POMs
  */
 class PomParser(
     private val file: File,
     private val moduleIdentifier: ModuleIdentifier,
+    private val pomResolver: PomResolver,
 ) {
-    private val artifactsDir = file.parentFile.parentFile.parentFile.parentFile.parentFile
-
     val inceptionYear: Int?
     val organizationName: String?
     val licenses: List<License>
@@ -203,7 +202,7 @@ class PomParser(
      * @param moduleIdentifier The module to get the developers from
      */
     private fun parseInceptionYear(moduleIdentifier: ModuleIdentifier): Int? {
-        val pom = findPomFromArtifactDir(getArtifactDirFromModule(moduleIdentifier))
+        val pom = pomResolver.resolve(moduleIdentifier)
 
         XmlParser().parse(pom).let {
             return parseInceptionYear(it, moduleIdentifier)
@@ -215,7 +214,7 @@ class PomParser(
      * @param moduleIdentifier The module to get the developers from
      */
     private fun parseOrganizationName(moduleIdentifier: ModuleIdentifier): String? {
-        val pom = findPomFromArtifactDir(getArtifactDirFromModule(moduleIdentifier))
+        val pom = pomResolver.resolve(moduleIdentifier)
 
         XmlParser().parse(pom).let {
             return parseOrganizationName(it, moduleIdentifier)
@@ -227,7 +226,7 @@ class PomParser(
      * @param moduleIdentifier The module to get the license from
      */
     private fun parseLicenses(moduleIdentifier: ModuleIdentifier): List<License> {
-        val pom = findPomFromArtifactDir(getArtifactDirFromModule(moduleIdentifier))
+        val pom = pomResolver.resolve(moduleIdentifier)
 
         XmlParser().parse(pom).let {
             return parseLicenses(it, moduleIdentifier)
@@ -241,7 +240,7 @@ class PomParser(
     private fun parseDevelopersNames(
         moduleIdentifier: ModuleIdentifier
     ): List<String> {
-        val pom = findPomFromArtifactDir(getArtifactDirFromModule(moduleIdentifier))
+        val pom = pomResolver.resolve(moduleIdentifier)
 
         XmlParser().parse(pom).let {
             return parseDevelopersNames(it, moduleIdentifier)
@@ -268,18 +267,6 @@ class PomParser(
         return ModuleIdentifier(groupId, artifactId, version)
     }
 
-    /**
-     * Get the path to the [moduleIdentifier]'s artifact.
-     */
-    private fun getArtifactDirFromModule(
-        moduleIdentifier: ModuleIdentifier,
-    ) = Paths.get(
-        artifactsDir.path,
-        moduleIdentifier.group,
-        moduleIdentifier.name,
-        moduleIdentifier.version,
-    ).toFile()
-
     fun build(): Pom {
         return Pom(
             file = file,
@@ -294,46 +281,18 @@ class PomParser(
 
     companion object {
         /**
-         * Obtain a [Pom] object given an artifact's file.
+         * Obtain a [Pom] object given a module identifier.
          *
-         * @param artifact The artifact
-         * @param moduleIdentifier The module identifier to which the artifact belongs
+         * @param moduleIdentifier The module identifier
+         * @param pomResolver The [PomResolver] used to find the POMs
          */
-        fun fromArtifact(
-            artifact: File,
+        fun fromModule(
             moduleIdentifier: ModuleIdentifier,
-        ): Pom {
-            val pomFile = findPOMFromArtifactFile(artifact)
-
-            return PomParser(pomFile, moduleIdentifier).build()
-        }
-
-        /**
-         * Find a POM given an artifact directory.
-         * @param artifactDir The artifact directory
-         */
-        private fun findPomFromArtifactDir(artifactDir: File): File {
-            require(artifactDir.isDirectory) { "${artifactDir.absolutePath} is not a directory" }
-
-            val poms = artifactDir.walk().filter {
-                it.extension == "pom"
-            }.toSet()
-
-            require(poms.isNotEmpty()) { "No POM found for artifact ${artifactDir.path}" }
-
-            if (poms.size > 1) {
-                debug("Multiple POMs found for ${artifactDir.path}, using the first one")
-            }
-
-            return poms.first()
-        }
-
-        /**
-         * Find a POM given an artifact file.
-         * @param artifact The artifact file, used to find the artifact's main dir
-         */
-        private fun findPOMFromArtifactFile(
-            artifact: File,
-        ) = findPomFromArtifactDir(artifact.parentFile.parentFile)
+            pomResolver: PomResolver,
+        ) = PomParser(
+            pomResolver.resolve(moduleIdentifier),
+            moduleIdentifier,
+            pomResolver,
+        ).build()
     }
 }

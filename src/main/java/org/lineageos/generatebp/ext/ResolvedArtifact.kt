@@ -12,10 +12,14 @@ import org.gradle.api.artifacts.ResolvedArtifact
 import org.lineageos.generatebp.models.Artifact
 import org.lineageos.generatebp.models.Artifact.FileType
 import org.lineageos.generatebp.utils.PomParser
+import org.lineageos.generatebp.utils.PomResolver
 import java.util.zip.ZipFile
 import kotlin.reflect.safeCast
 
-fun ResolvedArtifact.toArtifact(defaultTargetSdkVersion: Int): Artifact {
+fun ResolvedArtifact.toArtifact(
+    defaultTargetSdkVersion: Int,
+    pomResolver: PomResolver,
+): Artifact {
     val moduleIdentifier = moduleVersion.id.toModuleIdentifier()
 
     val file = file
@@ -24,7 +28,7 @@ fun ResolvedArtifact.toArtifact(defaultTargetSdkVersion: Int): Artifact {
         FileType.fromExtension(it)
     } ?: error("Unknown artifact extension $extension for artifact ${file.path}")
 
-    val pom = PomParser.fromArtifact(file, moduleIdentifier)
+    val pom = PomParser.fromModule(moduleIdentifier, pomResolver)
 
     var targetSdkVersion = defaultTargetSdkVersion
     var minSdkVersion: Int? = null

@@ -9,6 +9,7 @@ import org.gradle.api.artifacts.ResolvedDependency
 import org.lineageos.generatebp.models.Module
 import org.lineageos.generatebp.models.ModuleIdentifier
 import org.lineageos.generatebp.utils.Logger.debug
+import org.lineageos.generatebp.utils.PomResolver
 
 /**
  * Get the list of the transitive dependencies of this [ResolvedDependency], with this
@@ -33,6 +34,7 @@ fun ResolvedDependency.toModuleIdentifier() = ModuleIdentifier(
  */
 fun ResolvedDependency.toModule(
     targetSdk: Int,
+    pomResolver: PomResolver,
 ): Module = Module(
     moduleGroup,
     moduleName,
@@ -44,7 +46,7 @@ fun ResolvedDependency.toModule(
         if (it.size > 1) {
             debug("Multiple artifacts found, using first one: $it")
         }
-    }.firstOrNull()?.toArtifact(targetSdk),
+    }.firstOrNull()?.toArtifact(targetSdk, pomResolver),
     treatAsFirstLevelDependency = parents.all { parents ->
         parents.moduleArtifacts.all { it.extension == "jar" }
     } && moduleArtifacts.any {
