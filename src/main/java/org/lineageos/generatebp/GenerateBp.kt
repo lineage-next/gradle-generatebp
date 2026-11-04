@@ -21,6 +21,7 @@ import org.lineageos.generatebp.models.ModuleQuirk
 import org.lineageos.generatebp.utils.Constants
 import org.lineageos.generatebp.utils.Constants.getAospAvailableModuleName
 import org.lineageos.generatebp.utils.Constants.getModuleQuirk
+import org.lineageos.generatebp.utils.PomResolver
 import org.lineageos.generatebp.utils.ReuseUtils.writeCopyrightFileForFile
 import java.io.File
 
@@ -41,13 +42,18 @@ internal class GenerateBp(
     ].resolvedConfiguration
 
     /**
+     * The [PomResolver] used to find the dependencies' POMs.
+     */
+    private val pomResolver = PomResolver(project.dependencies)
+
+    /**
      * All the dependencies, including transitive dependencies. Quirks aren't applied yet.
      */
     private val allDependencies = resolvedConfiguration.firstLevelModuleDependencies.asSequence()
         .flatMap { it.getRecursiveDependencies() }
         .distinct()
         .associate { moduleIdentifier ->
-            moduleIdentifier.toModule(targetSdk).let {
+            moduleIdentifier.toModule(targetSdk, pomResolver).let {
                 it as ModuleIdentifier to it
             }
         }
